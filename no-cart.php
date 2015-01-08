@@ -70,6 +70,7 @@ class No_Cart {
 	private function __construct() {
 
 		$this->version = '1.0.0';
+		$this->domain  = 'no-cart';
 
 		$this->load_dependencies();
 
@@ -90,7 +91,12 @@ class No_Cart {
 	 */ 
 	function load_nocart_textdomain() {
 
-		load_plugin_textdomain( 'no-cart', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+		$domain = 'no-cart';
+		
+		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+
+		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
+		load_plugin_textdomain( $domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 	}
 
