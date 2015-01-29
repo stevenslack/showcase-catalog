@@ -75,6 +75,7 @@ class No_Cart {
 
 		// registers the Custom Post Type
 		$this->cpt = new No_Cart_CPT();
+		$this->cpt = new No_Cart_Meta();
 
 		// Load plugin text domain
 		add_action( 'plugins_loaded', array( $this, 'load_nocart_textdomain' ) );
@@ -107,6 +108,7 @@ class No_Cart {
 	private function load_dependencies() {
 
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-nocart-post-type.php';
+		require_once plugin_dir_path( __FILE__ ) . 'admin/class-no-cart-metaboxes.php';
 
 
 	}
