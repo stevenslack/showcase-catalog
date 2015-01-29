@@ -29,6 +29,7 @@ class No_Cart_Meta {
 
 		// Save meta
 		add_action( 'save_post', array( $this, 'save_meta' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_styles' ) );
 
 	}
 
@@ -101,6 +102,17 @@ class No_Cart_Meta {
 	}
 
 
+	public function admin_styles() {
 
+		$screen = get_current_screen();
+		$post_type = $screen->id;
+
+		if ( $post_type == 'no-cart' ) {
+			// enqueue styles which 
+			wp_enqueue_style( 'no-cart-styles', plugin_dir_url( __FILE__ ) . 'css/no-cart-admin.css' );
+		}
+
+
+	}
 
 }
