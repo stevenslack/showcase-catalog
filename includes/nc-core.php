@@ -69,7 +69,7 @@ function nc_get_template_part( $slug, $name = '' ) {
 		$template = plugin_dir_path( dirname( __FILE__ ) ) . "templates/{$slug}-{$name}.php";
 	}
 
-	// If template file doesn't exist, look in yourtheme/woocommerce/slug.php
+	// If template file doesn't exist, look in yourtheme/no-cart/slug.php
 	if ( ! $template ) {
 		$template = locate_template( array( "no-cart/{$slug}.php" ) );
 	}
