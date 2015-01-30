@@ -109,7 +109,9 @@ class No_Cart {
 
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-nocart-post-type.php';
 		require_once plugin_dir_path( __FILE__ ) . 'admin/class-no-cart-metaboxes.php';
-
+		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-core.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-template-hooks.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-template-functions.php';
 
 	}
 
