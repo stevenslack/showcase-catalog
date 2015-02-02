@@ -12,6 +12,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
+/**
+ * Get No Cart Item
+ * 
+ * @return object the No Cart Item
+ */
+function get_nc_item() {
+
+	global $post;
+
+	return new No_Cart_Item( $post->ID );
+
+}	
+
+
 if ( ! function_exists( 'nc_content_wrap_open' ) ) {
 
 	/**
@@ -67,9 +81,49 @@ if ( ! function_exists( 'nc_item_single_title' ) ) {
 	 * @return string
 	 */
 	function nc_item_single_title() {
+		
 		?>
 		<h1 itemprop="name" class="nc-item-title entry-title"><?php the_title(); ?></h1>
 		<?php
+
+	}
+
+}
+
+
+if ( ! function_exists( 'nc_html_price' ) ) {
+
+	/**
+	 * The No Cart Item HTML Price
+	 * 
+	 * @return string html 
+	 */
+	function nc_html_price() {
+
+		$product = get_nc_item();
+
+		echo $product->adjusted_price();
+
+	}
+}
+
+
+if ( ! function_exists( 'nc_the_sku' ) ) {
+
+	/**
+	 * The no cart item SKU
+	 * @return string
+	 */
+	function nc_the_sku() {
+
+		$product = get_nc_item();
+		$sku = $product->get_sku();
+
+		if ( ! $sku )
+			return;
+
+		printf( '<div class="nc-sku">%1$s: %2$s</div>', __( 'SKU', 'no-cart' ), $sku );
+		
 	}
 
 }
@@ -88,3 +142,4 @@ if ( ! function_exists( 'nc_item_content' ) ) {
 		<?php
 	}
 }
+
