@@ -16,18 +16,149 @@ class No_Cart_Item {
 	/** @var object The actual post object. */
 	public $post;
 
+	/**
+	 * No Cart Item Construct
+	 * @param int $item the ID of the product or item
+	 */
 	public function __construct( $item ) {
 
 		if ( is_numeric( $item ) ) {
 			$this->id   = absint( $item );
 			$this->post = get_post( $this->id );
-		} elseif ( $item instanceof WC_Product ) {
+		} elseif ( $item instanceof No_Cart_Item ) {
 			$this->id   = absint( $item->id );
 			$this->post = $item;
 		} elseif ( $item instanceof WP_Post || isset( $item->ID ) ) {
 			$this->id   = absint( $item->ID );
 			$this->post = $item;
 		}
+	}
+
+
+	/**
+	 * Return an instance of this class.
+	 *
+	 * @since     1.0.0
+	 *
+	 * @return    object    A single instance of this class.
+	 */
+	public static function instance() {
+
+		// If the single instance hasn't been set, set it now.
+		if ( null == self::$instance ) {
+			self::$instance = new self;
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Get the item price
+	 * @return string the price of the product
+	 */
+	public function get_price() {
+
+		// set the currency to US standards
+		setlocale( LC_MONETARY, 'en_US' );
+
+		$price = get_post_meta( $this->id, 'no-cart-price', true );
+		if ( $price ) {
+
+			// curently only show US price symbol
+			return money_format( '%+#10n', $price );
+		}
+
+	}
+
+
+	/**
+	 * Get the item reduced price
+	 * 
+	 * @return string the reduced price of the item
+	 */
+	public function get_reduced_price() {
+
+		// set the currency to US standards
+		setlocale( LC_MONETARY, 'en_US' );
+
+		$price = get_post_meta( $this->id, 'no-cart-sale-price', true );
+		if ( $price ) {
+
+			// curently only show US price symbol
+			return money_format( '%+#10n', $price );
+		}
+	}
+
+	/**
+	 * The Adusted Price
+	 * displays the sale price and the regular price
+	 * 
+	 * @return string html span tags with price
+	 */
+	public function adjusted_price() {
+
+		$price = '';
+
+		// get the discounted price
+		$sale_price = $this->get_reduced_price() ? '<span class="nc-sale-price">' . $this->get_reduced_price() . '</span>' : '';
+
+		// the strikethough class if there is a sale price
+		$strike_class = $sale_price ? ' strike' : '';
+
+		// get the regular price
+		$reg_price = $this->get_price() ? '<span class="nc-reg-price' . $strike_class . '">' . $this->get_price() . '</span>' : '';
+
+		if ( $sale_price && $reg_price ) {
+
+			$price = sprintf( '<del>%1$s</del> <ins>%2$s</ins>', $reg_price, $sale_price );
+
+			$price = apply_filters( 'nc_adjusted_price', $price, $this );
+
+		} else {
+
+			$price = $reg_price . $sale_price;
+
+			$price = apply_filters( 'nc_display_price', $price, $this );
+		}
+
+		if ( $price )
+
+			$price_html = sprintf( '<div class="nc-price">%s</div>', $price );
+
+		return apply_filters( 'nc_display_html_price', $price_html, $this );
+
+	}
+
+
+	/**
+	 * Get the SKU
+	 * 
+	 * @return string the SKU
+	 */
+	public function get_sku() {
+
+		$sku = esc_html( get_post_meta( $this->id, 'no-cart-sku', true ) );
+
+		if ( ! $sku )
+			return;
+
+		return apply_filters( 'nc_get_the_sku', $sku, $this );
+
+	}
+
+	/**
+	 * Get the SKU html format
+	 * @return [type] [description]
+	 */
+	public function get_sku_html() {
+
+		$sku = $this->get_sku();
+
+		if ( ! $sku )
+			return;
+
+		return sprintf( '<div class="nc-sku">%s</div>', $sku );
+
 	}
 
 }
