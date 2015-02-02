@@ -32,6 +32,7 @@
 
 		</div><!-- /.item-details -->
 
+		
 		<?php
 			/**
 			 * No Cart Item Content
