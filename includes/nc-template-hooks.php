@@ -23,4 +23,6 @@ add_action( 'no_cart_after',  'nc_content_wrap_close', 10 );
  */
 add_action( 'no_cart_single_image', 'nc_single_image', 5 );
 add_action( 'no_cart_item_details', 'nc_item_single_title', 5 );
+add_action( 'no_cart_item_details', 'nc_html_price', 10 );
+add_action( 'no_cart_item_details', 'nc_the_sku', 15 );
 add_action( 'no_cart_item_content', 'nc_item_content', 10 );
