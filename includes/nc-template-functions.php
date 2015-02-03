@@ -63,7 +63,7 @@ if ( ! function_exists( 'nc_single_image' ) ) {
 		if ( has_post_thumbnail() ) {
 		?>
 		<div class="item-image">
-			<?php the_post_thumbnail( array( 450, 450 ) ); ?>
+			<?php the_post_thumbnail( 'nc_single' ); ?>
 		</div>
 		<!-- /.item-image -->
 		<?php
