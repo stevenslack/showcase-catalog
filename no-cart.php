@@ -62,6 +62,16 @@ class No_Cart {
 
 
 	/**
+	 * The settings page
+	 * 
+	 * @access  public
+	 * @since   1.0.0
+	 * @var     string
+	 */
+	public $settings;
+
+
+	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
 	 *
@@ -77,8 +87,14 @@ class No_Cart {
 		$this->cpt = new No_Cart_CPT();
 		$this->cpt = new No_Cart_Meta();
 
+		if ( is_admin() ) {
+    		$this->settings = new No_Cart_Settings();
+    	}
+
 		// Load plugin text domain
 		add_action( 'plugins_loaded', array( $this, 'load_nocart_textdomain' ) );
+
+		add_action( 'after_setup_theme', array( $this, 'display_image_sizes' ) );
 
 	}
 
@@ -113,6 +129,7 @@ class No_Cart {
 		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-core.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-template-hooks.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-template-functions.php';
+		require_once plugin_dir_path( __FILE__ ) . 'admin/class-nocart-settings.php';
 
 	}
 
@@ -173,6 +190,27 @@ class No_Cart {
 		$nocart_cpt->register_cpt();
 
 		flush_rewrite_rules();
+
+	}
+
+
+	/**
+	 * Add the image sizes set in the options page
+	 * 
+	 */
+	public function display_image_sizes() {
+
+		// Post thumbnails
+		if ( ! current_theme_supports( 'post-thumbnails' ) ) {
+			add_theme_support( 'post-thumbnails' );
+		}
+		add_post_type_support( 'no-cart', 'thumbnail' );
+
+		// Get General Page Options
+		$options = get_option( 'no_cart_general' );
+
+		add_image_size( 'nc_single', $options['single-width'], $options['single-height'], $options['single-crop'] );
+		add_image_size( 'nc_catalog', $options['catalog-width'], $options['catalog-height'], $options['catalog-crop'] );
 
 	}
 
