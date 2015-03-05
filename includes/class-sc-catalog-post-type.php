@@ -93,7 +93,7 @@ class SC_Catalog_CPT {
 			'update_item'       => __( 'Update Catalog Category', 'sc-catalog' ),
 			'add_new_item'      => __( 'Add New Catalog Category', 'sc-catalog' ),
 			'new_item_name'     => __( 'New Catalog Category Name', 'sc-catalog' ),
-			'menu_name'         => __( 'Catalog Category', 'sc-catalog' ),
+			'menu_name'         => __( 'Catalog Categories', 'sc-catalog' ),
 		);
 
 		$args = array(
