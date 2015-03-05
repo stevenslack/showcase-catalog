@@ -16,7 +16,7 @@ get_header( 'sc-catalog' ); ?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
 
-			<?php sc_catalog_get_template_part( 'content', 'single-item' ); ?>
+			<?php sc_catalog_get_template_part( 'content', 'item' ); ?>
 
 		<?php endwhile; // end of the loop. ?>
 

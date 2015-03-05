@@ -73,6 +73,27 @@ if ( ! function_exists( 'sc_catalog_single_image' ) ) {
 }
 
 
+if ( ! function_exists( 'sc_catalog_image' ) ) {
+
+	/**
+	 * The catalog featured image
+	 * @return string
+	 */
+	function sc_catalog_image() {
+
+		if ( has_post_thumbnail() ) {
+		?>
+		<div class="catalog-item-image">
+			<?php the_post_thumbnail( 'sc_catalog' ); ?>
+		</div>
+		<!-- /.item-image -->
+		<?php
+		}
+
+	}
+}
+
+
 if ( ! function_exists( 'sc_catalog_item_single_title' ) ) {
 
 	/**

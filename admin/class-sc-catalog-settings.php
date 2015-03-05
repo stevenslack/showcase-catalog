@@ -251,15 +251,16 @@ class SC_Catalog_Settings {
 		if ( isset( $options['single-crop'] ) ) {
 			$crop = $options['single-crop']; 
 		} else {
-			$crop = 1; // defaults to true
+			$crop = 0; // defaults to false
 		}
 
 		?>
 			<input name="sc_catalog_general[single-width]" id="single-width" type="text" size="3" value="<?php echo $width; ?>" /> &times; <input name="sc_catalog_general[single-height]" id="single-height" type="text" size="3" value="<?php echo $height; ?>" />px
 
-			<label><input name="sc_catalog_general[single-crop]" id="single-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php _e( 'Hard Crop?', 'sc-catalog' ); ?></label>
+			<label><input name="sc_catalog_general[single-crop]" id="single-crop" type="checkbox" value="1" <?php checked( $crop, 1 ); ?> /> <?php _e( 'Hard Crop?', 'sc-catalog' ); ?></label>
 
 		<?php
+
 	}
 
 
@@ -287,13 +288,13 @@ class SC_Catalog_Settings {
 		if ( isset( $options['catalog-crop'] ) ) {
 			$crop = $options['catalog-crop']; 
 		} else {
-			$crop = 1;
+			$crop = 0;
 		}
 
 		?>
 			<input name="sc_catalog_general[catalog-width]" id="catalog-width" type="text" size="3" value="<?php echo $width; ?>" /> &times; <input name="sc_catalog_general[catalog-height]" id="catalog-height" type="text" size="3" value="<?php echo $height; ?>" />px
 
-			<label><input name="sc_catalog_general[catalog-crop]" id="catalog-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php _e( 'Hard Crop?', 'sc-catalog' ); ?></label>
+			<label><input name="sc_catalog_general[catalog-crop]" id="catalog-crop" type="checkbox" value="1" <?php checked( $crop, 1 ); ?> /> <?php _e( 'Hard Crop?', 'sc-catalog' ); ?></label>
 
 		<?php
 	}

@@ -26,3 +26,8 @@ add_action( 'sc_catalog_item_details', 'sc_catalog_item_single_title', 5 );
 add_action( 'sc_catalog_item_details', 'sc_catalog_html_price', 10 );
 add_action( 'sc_catalog_item_details', 'sc_catalog_the_sku', 15 );
 add_action( 'sc_catalog_item_content', 'sc_catalog_item_content', 10 );
+
+/**
+ * Showcase Catalog hooks
+ */
+add_action( 'sc_catalog_item_image', 'sc_catalog_image', 5 );

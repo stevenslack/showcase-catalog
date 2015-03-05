@@ -222,8 +222,50 @@ class SC_Catalog {
 		// Get General Page Options
 		$options = get_option( 'sc_catalog_general' );
 
-		add_image_size( 'sc_catalog_single', $options['single-width'], $options['single-height'], $options['single-crop'] );
-		add_image_size( 'sc_catalog_catalog', $options['catalog-width'], $options['catalog-height'], $options['catalog-crop'] );
+		/**
+		 * Single Project Image
+		 */
+		if ( isset( $options['single-width'] ) ) {
+			$single_width = $options['single-width']; 
+		} else {
+			$single_width = '500'; // default
+		}
+
+		if ( isset( $options['single-height'] ) ) {
+			$single_height = $options['single-height']; 
+		} else {
+			$single_height = '300'; // default
+		}
+
+		if ( isset( $options['single-crop'] ) ) {
+			$single_crop = $options['single-crop']; 
+		} else {
+			$single_crop = 0; // defaults to true
+		}
+
+		/**
+		 * Product Catalog Image
+		 */
+		if ( isset( $options['catalog-width'] ) ) {
+			$catalog_width = $options['catalog-width']; 
+		} else {
+			$catalog_width = '300'; // default
+		}
+
+		if ( isset( $options['catalog-height'] ) ) {
+			$catalog_height = $options['catalog-height']; 
+		} else {
+			$catalog_height = '300'; // default
+		}
+
+		if ( isset( $options['catalog-crop'] ) ) {
+			$catalog_crop = $options['catalog-crop']; 
+		} else {
+			$catalog_crop = 0;
+		}
+
+		add_image_size( 'sc_catalog_single', $single_width, $single_height, $single_crop );
+		add_image_size( 'sc_catalog', $catalog_width, $catalog_height, $catalog_crop );
 
 	}
 
