@@ -1,0 +1,41 @@
+/** No Cart Styles */
+
+.single-no-cart {
+
+	.no-cart-wrap {
+
+		.nc-item-description {
+			display:block;
+			clear:both;
+		}
+
+		.item-image, .item-details {
+			margin-bottom: 1em;
+		}
+
+	}
+
+}
+
+@media screen and ( min-width: 768px ) {
+
+	.single-no-cart {
+		
+		.no-cart-wrap {
+
+			.item-image, .item-details {
+				width: 48%;
+			}
+
+			.item-image {
+				float:left;
+			}
+
+			.item-details {
+				float:right;
+			}
+
+		}
+	}
+
+}

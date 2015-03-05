@@ -12,7 +12,7 @@ module.exports = function(grunt) {
                     style: 'compressed',
                 },
                 files: {
-                    'assets/main-styles.css': 'assets/main-styles.scss',
+                    'public/assets/css/no-cart.css': 'public/assets/css/no-cart.scss',
                 }
             },
         },
@@ -23,23 +23,19 @@ module.exports = function(grunt) {
             single_file: {
               options: {
                 browsers: ['last 2 versions', 'ie 8', 'ie 9', 'ios 6', 'android 4'],
-                map: true
+                map: false
               },
-              src: 'assets/main-styles.css',
-              dest: 'assets/main-styles.css'
+              src: 'public/assets/css/no-cart.css',
+              dest: 'public/assets/css/no-cart.css'
             },
         },
 
         // watch for changes and trigger sass, jshint, uglify and livereload
         watch: {
             sass: {
-                files: ['assets/css/*.{scss,sass}'],
+                files: ['public/assets/css/*.{scss,sass}'],
                 tasks: ['sass', 'autoprefixer']
             },
-            js: {
-                files: 'js/components/init.js',
-                tasks: ['jshint', 'uglify']
-            }
         },
 
     });

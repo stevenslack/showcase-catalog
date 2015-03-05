@@ -1,0 +1,49 @@
+// Global Rules
+
+.no-cart-wrap {
+
+	.nc-item-description {
+		display:block;
+		clear:both;
+	}
+
+	.item-image, .item-details {
+		margin-bottom: 1em;
+	}
+
+	.item-image {
+		img {
+			width: auto;
+			max-width: 100%;
+			height: auto;
+		}
+	}
+
+	.nc-price {
+		font-size:1.2em;
+
+		del {
+			margin-right: 0.5em
+		}
+		ins {
+			font-size:1.4em;
+			background:none;
+		}
+	}
+
+	.nc-sku {
+		font-size:0.9em;
+	}
+
+	.nc-reg-price {
+		color:#33B26E;
+		&.strike {
+			color:inherit;
+		}
+	}
+
+	.nc-sale-price {
+		color:#F46353;
+	}
+
+}

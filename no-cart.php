@@ -60,6 +60,15 @@ class No_Cart {
 	 */
 	public $cpt;
 
+	/**
+	 * The custom meta.
+	 * 
+	 * @access  public
+	 * @since   1.0.0
+	 * @var     string
+	 */
+	public $meta;
+
 
 	/**
 	 * The settings page
@@ -85,11 +94,14 @@ class No_Cart {
 
 		// registers the Custom Post Type
 		$this->cpt = new No_Cart_CPT();
-		$this->cpt = new No_Cart_Meta();
+		$this->meta = new No_Cart_Meta();
 
 		if ( is_admin() ) {
     		$this->settings = new No_Cart_Settings();
     	}
+
+    	// front facing functions
+    	new No_Cart_Front();
 
 		// Load plugin text domain
 		add_action( 'plugins_loaded', array( $this, 'load_nocart_textdomain' ) );
@@ -130,6 +142,7 @@ class No_Cart {
 		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-template-hooks.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-template-functions.php';
 		require_once plugin_dir_path( __FILE__ ) . 'admin/class-nocart-settings.php';
+		require_once plugin_dir_path( __FILE__ ) . 'public/class-front-end-functionality.php';
 
 	}
 
