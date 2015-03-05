@@ -2,7 +2,7 @@
 
 .sc-catalog-wrap {
 
-	.nc-item-description {
+	.sc-catalog-item-description {
 		display:block;
 		clear:both;
 	}
@@ -19,7 +19,7 @@
 		}
 	}
 
-	.nc-price {
+	.sc-catalog-price {
 		font-size:1.2em;
 
 		del {
@@ -31,18 +31,18 @@
 		}
 	}
 
-	.nc-sku {
+	.sc-catalog-sku {
 		font-size:0.9em;
 	}
 
-	.nc-reg-price {
+	.sc-catalog-reg-price {
 		color:#33B26E;
 		&.strike {
 			color:inherit;
 		}
 	}
 
-	.nc-sale-price {
+	.sc-catalog-sale-price {
 		color:#F46353;
 	}
 

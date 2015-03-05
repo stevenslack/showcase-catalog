@@ -41,17 +41,17 @@ class SC_Catalog_CPT {
 	public function register_cpt() {
 
 		$labels = array(
-			'name' 					=> __( 'Products',         'sc-catalog' ), 
-			'singular_name' 		=> __( 'Product',          'sc-catalog' ), 
-			'all_items' 			=> __( 'All Products',     'sc-catalog' ), 
-			'add_new' 				=> __( 'Add New Product',  'sc-catalog' ), 
-			'add_new_item' 			=> __( 'Add New Product',  'sc-catalog' ),
-			'edit' 					=> __( 'Edit Product',     'sc-catalog' ), 
-			'edit_item' 			=> __( 'Edit Product',     'sc-catalog' ), 
-			'new_item' 				=> __( 'New Product',      'sc-catalog' ), 
-			'view_item' 			=> __( 'View Product',     'sc-catalog' ),
-			'search_items' 			=> __( 'Search Products',  'sc-catalog' ), 
-			'not_found' 			=> __( 'Nothing found. Try creating a new Product.', 'sc-catalog' ), 
+			'name' 					=> __( 'Catalog',         		'sc-catalog' ), 
+			'singular_name' 		=> __( 'Item',          		'sc-catalog' ), 
+			'all_items' 			=> __( 'All Catalog Items', 	'sc-catalog' ), 
+			'add_new' 				=> __( 'Add New Item',  		'sc-catalog' ), 
+			'add_new_item' 			=> __( 'Add New Item',  		'sc-catalog' ),
+			'edit' 					=> __( 'Edit Item',     		'sc-catalog' ), 
+			'edit_item' 			=> __( 'Edit Item',     		'sc-catalog' ), 
+			'new_item' 				=> __( 'New Item',      		'sc-catalog' ), 
+			'view_item' 			=> __( 'View Item',     		'sc-catalog' ),
+			'search_items' 			=> __( 'Search Catalog Items',  'sc-catalog' ), 
+			'not_found' 			=> __( 'Nothing found. Try creating a new Item.', 'sc-catalog' ), 
 			'not_found_in_trash' 	=> __( 'Nothing found in Trash', 'sc-catalog' ),
 			'parent_item_colon' 	=> '',
 		);
@@ -66,8 +66,8 @@ class SC_Catalog_CPT {
 			'show_in_menu'			=> true,
 			'query_var'			 	=> true,
 			'menu_position' 		=> 20,
-			'menu_icon' 			=> 'dashicons-cart',	
-			'rewrite'				=> array( 'slug' => 'products', 'with_front' => false ), 	
+			'menu_icon' 			=> 'dashicons-store',	
+			'rewrite'				=> array( 'slug' => 'catalog', 'with_front' => false ), 	
 			'has_archive' 			=> true, 	
 			'capability_type' 		=> 'page',
 			'hierarchical' 			=> false,
@@ -83,17 +83,17 @@ class SC_Catalog_CPT {
 
 		// Adds Category taxonomy for the Showcase Catalog Custom Post Type
 		$labels = array(
-			'name'              => _x( 'Product Categories', 'taxonomy general name', 'sc-catalog' ),
-			'singular_name'     => _x( 'Product Category', 'taxonomy singular name', 'sc-catalog' ),
-			'search_items'      => __( 'Search Product Categories', 'sc-catalog' ),
-			'all_items'         => __( 'All Product Categories', 'sc-catalog' ),
-			'parent_item'       => __( 'Parent Product Category', 'sc-catalog' ),
-			'parent_item_colon' => __( 'Parent Product Category:', 'sc-catalog' ),
-			'edit_item'         => __( 'Edit Product Category', 'sc-catalog' ),
-			'update_item'       => __( 'Update Product Category', 'sc-catalog' ),
-			'add_new_item'      => __( 'Add New Product Category', 'sc-catalog' ),
-			'new_item_name'     => __( 'New Product Category Name', 'sc-catalog' ),
-			'menu_name'         => __( 'Product Category', 'sc-catalog' ),
+			'name'              => _x( 'Catalog Categories', 'taxonomy general name', 'sc-catalog' ),
+			'singular_name'     => _x( 'Catalog Category', 'taxonomy singular name', 'sc-catalog' ),
+			'search_items'      => __( 'Search Catalog Categories', 'sc-catalog' ),
+			'all_items'         => __( 'All Catalog Categories', 'sc-catalog' ),
+			'parent_item'       => __( 'Parent Catalog Category', 'sc-catalog' ),
+			'parent_item_colon' => __( 'Parent Catalog Category:', 'sc-catalog' ),
+			'edit_item'         => __( 'Edit Catalog Category', 'sc-catalog' ),
+			'update_item'       => __( 'Update Catalog Category', 'sc-catalog' ),
+			'add_new_item'      => __( 'Add New Catalog Category', 'sc-catalog' ),
+			'new_item_name'     => __( 'New Catalog Category Name', 'sc-catalog' ),
+			'menu_name'         => __( 'Catalog Category', 'sc-catalog' ),
 		);
 
 		$args = array(
@@ -103,7 +103,7 @@ class SC_Catalog_CPT {
 			'show_in_nav_menus'	=> true,
 			'show_admin_column' => true,
 			'query_var'         => true,
-			'rewrite'           => array( 'slug' => 'product-category', 'with_front' => false ), 
+			'rewrite'           => array( 'slug' => 'catalog-category', 'with_front' => false ), 
 		);
 
 		register_taxonomy( 'sc-catalog-categories', array( 'sc-catalog' ), $args );
