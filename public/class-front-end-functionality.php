@@ -1,48 +1,48 @@
 <?php
 /**
- * No Cart Front end Functions
+ * Showcase Catalog Front end Functions
  * 
  * @link       http://s2webpress.com
  * @since      1.0.0
  *
- * @package    No_Cart
+ * @package    SC_Catalog
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
-class No_Cart_Front {
+class SC_Catalog_Front {
 
 	/**
-	 * No Cart Front End construct
+	 * Showcase Catalog Front End construct
 	 *
 	 * @since     1.0.0
 	 */
 	public function __construct() {
 
-		// $this->options = get_option( 'nocart-options' );
+		// $this->options = get_option( 'sc-catalog-options' );
 		
-		add_action( 'wp_enqueue_scripts', array( $this, 'no_cart_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'sc_catalog_scripts' ) );
 
 	}
 
 	/**
-	 * No Cart Front End Scripts
+	 * Showcase Catalog Front End Scripts
 	 * 
 	 * @since     1.0.0
 	 */
-	public function no_cart_scripts() {
+	public function sc_catalog_scripts() {
 
-		wp_enqueue_style( 'no-cart-style', plugins_url( 'assets/css/no-cart.css', __FILE__ )  );
+		wp_enqueue_style( 'sc-catalog-style', plugins_url( 'assets/css/sc-catalog.css', __FILE__ )  );
 
 	}
 
 
 	public function select_display_page() {
 
-		$options = get_option( 'no_cart_general' );
+		$options = get_option( 'sc_catalog_general' );
 
-		if ( isset( $options['nocart_archive_id'] ) ) {
-			$value = $options['nocart_archive_id'];
+		if ( isset( $options['sc_catalog_archive_id'] ) ) {
+			$value = $options['sc_catalog_archive_id'];
 		} else {
 			$value = null;
 		}

@@ -5,7 +5,7 @@
  *
  * @since      1.0.0
  *
- * @package    No_Cart
+ * @package    SC_Catalog
  */
 
 // If uninstall not called from WordPress, then exit.

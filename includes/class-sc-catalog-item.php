@@ -1,14 +1,14 @@
 <?php
 /**
- * No Cart Item
+ * Showcase Catalog Item
  *
- * The no cart item class which handles all data from each item
+ * The Showcase Catalog item class which handles all data from each item
  *
- * @class       No_Cart_Item
+ * @class       SC_Catalog_Item
  * @version     1.0.0
  */
 
-class No_Cart_Item {
+class SC_Catalog_Item {
 
 	/** @var int The item (post) ID. */
 	public $id;
@@ -17,7 +17,7 @@ class No_Cart_Item {
 	public $post;
 
 	/**
-	 * No Cart Item Construct
+	 * Showcase Catalog Item Construct
 	 * @param int $item the ID of the product or item
 	 */
 	public function __construct( $item ) {
@@ -25,7 +25,7 @@ class No_Cart_Item {
 		if ( is_numeric( $item ) ) {
 			$this->id   = absint( $item );
 			$this->post = get_post( $this->id );
-		} elseif ( $item instanceof No_Cart_Item ) {
+		} elseif ( $item instanceof SC_Catalog_Item ) {
 			$this->id   = absint( $item->id );
 			$this->post = $item;
 		} elseif ( $item instanceof WP_Post || isset( $item->ID ) ) {
@@ -61,7 +61,7 @@ class No_Cart_Item {
 		// set the currency to US standards
 		setlocale( LC_MONETARY, 'en_US' );
 
-		$price = get_post_meta( $this->id, 'no-cart-price', true );
+		$price = get_post_meta( $this->id, 'sc-catalog-price', true );
 		if ( $price ) {
 
 			// curently only show US price symbol
@@ -81,7 +81,7 @@ class No_Cart_Item {
 		// set the currency to US standards
 		setlocale( LC_MONETARY, 'en_US' );
 
-		$price = get_post_meta( $this->id, 'no-cart-sale-price', true );
+		$price = get_post_meta( $this->id, 'sc-catalog-sale-price', true );
 		if ( $price ) {
 
 			// curently only show US price symbol
@@ -100,32 +100,32 @@ class No_Cart_Item {
 		$price = '';
 
 		// get the discounted price
-		$sale_price = $this->get_reduced_price() ? '<span class="nc-sale-price">' . $this->get_reduced_price() . '</span>' : '';
+		$sale_price = $this->get_reduced_price() ? '<span class="sc-catalog-sale-price">' . $this->get_reduced_price() . '</span>' : '';
 
 		// the strikethough class if there is a sale price
 		$strike_class = $sale_price ? ' strike' : '';
 
 		// get the regular price
-		$reg_price = $this->get_price() ? '<span class="nc-reg-price' . $strike_class . '">' . $this->get_price() . '</span>' : '';
+		$reg_price = $this->get_price() ? '<span class="sc-catalog-reg-price' . $strike_class . '">' . $this->get_price() . '</span>' : '';
 
 		if ( $sale_price && $reg_price ) {
 
 			$price = sprintf( '<del>%1$s</del> <ins>%2$s</ins>', $reg_price, $sale_price );
 
-			$price = apply_filters( 'nc_adjusted_price', $price, $this );
+			$price = apply_filters( 'sc_catalog_adjusted_price', $price, $this );
 
 		} else {
 
 			$price = $reg_price . $sale_price;
 
-			$price = apply_filters( 'nc_display_price', $price, $this );
+			$price = apply_filters( 'sc_catalog_display_price', $price, $this );
 		}
 
 		if ( $price )
 
-			$price_html = sprintf( '<div class="nc-price">%s</div>', $price );
+			$price_html = sprintf( '<div class="sc-catalog-price">%s</div>', $price );
 
-		return apply_filters( 'nc_display_html_price', $price_html, $this );
+		return apply_filters( 'sc_catalog_display_html_price', $price_html, $this );
 
 	}
 
@@ -137,12 +137,12 @@ class No_Cart_Item {
 	 */
 	public function get_sku() {
 
-		$sku = esc_html( get_post_meta( $this->id, 'no-cart-sku', true ) );
+		$sku = esc_html( get_post_meta( $this->id, 'sc-catalog-sku', true ) );
 
 		if ( ! $sku )
 			return;
 
-		return apply_filters( 'nc_get_the_sku', $sku, $this );
+		return apply_filters( 'sc_catalog_get_the_sku', $sku, $this );
 
 	}
 
@@ -157,7 +157,7 @@ class No_Cart_Item {
 		if ( ! $sku )
 			return;
 
-		return sprintf( '<div class="nc-sku">%s</div>', $sku );
+		return sprintf( '<div class="sc-catalog-sku">%s</div>', $sku );
 
 	}
 

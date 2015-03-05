@@ -1,19 +1,19 @@
 <?php
 /**
- * No Cart Settings Page
+ * Showcase Catalog Settings Page
  * 
  * @link       http://s2webpress.com
  * @since      1.0.0
  *
- * @package    No_Cart
+ * @package    SC_Catalog
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
-class No_Cart_Settings {
+class SC_Catalog_Settings {
 
     /**
-     * No Cart Settings Construct
+     * Showcase Catalog Settings Construct
      * 
      * @since    1.0.0
      */
@@ -28,17 +28,17 @@ class No_Cart_Settings {
 
 
     /**
-     * Add the Settings Page as a subpage to the No Cart Post Type
+     * Add the Settings Page as a subpage to the Showcase Catalog Post Type
      */
     public function add_settings_page() {
 
-    	// adds a submenu page under no cart's Custom Post Type
+    	// adds a submenu page under Showcase Catalog's Custom Post Type
         add_submenu_page(
-            'edit.php?post_type=no-cart', 
-			__( 'No Cart Settings', 'no-cart' ),
-			__( 'Settings', 'no-cart' ),
+            'edit.php?post_type=sc-catalog', 
+			__( 'Showcase Catalog Settings', 'sc-catalog' ),
+			__( 'Settings', 'sc-catalog' ),
             'administrator',
-            'no-cart-settings', 
+            'sc-catalog-settings', 
             array( $this, 'display_admin_page' )
         );
 
@@ -55,7 +55,7 @@ class No_Cart_Settings {
     	// establish active tab
     	$active_tab = 'general_settings';
     	// page URL string
-    	$page_url = '?post_type=no-cart&amp;page=no-cart-settings&amp;tab=';
+    	$page_url = '?post_type=sc-catalog&amp;page=sc-catalog-settings&amp;tab=';
 
         ?>
         <div class="wrap">
@@ -72,8 +72,8 @@ class No_Cart_Settings {
 			} // end if/else ?>
 
 			<h2 class="nav-tab-wrapper">
-				<a href="<?php echo $page_url; ?>general_settings" class="nav-tab <?php echo $active_tab == 'general_settings' ? 'nav-tab-active' : ''; ?>"><?php _e( 'General Settings', 'no-cart' ); ?></a>
-				<a href="<?php echo $page_url; ?>labels" class="nav-tab <?php echo $active_tab == 'labels' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Labels', 'no-cart' ); ?></a>
+				<a href="<?php echo $page_url; ?>general_settings" class="nav-tab <?php echo $active_tab == 'general_settings' ? 'nav-tab-active' : ''; ?>"><?php _e( 'General Settings', 'sc-catalog' ); ?></a>
+				<a href="<?php echo $page_url; ?>labels" class="nav-tab <?php echo $active_tab == 'labels' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Labels', 'sc-catalog' ); ?></a>
 			</h2>
 
             <form method="post" action="options.php">
@@ -81,8 +81,8 @@ class No_Cart_Settings {
 
 				if ( $active_tab == 'general_settings' ) {
 
-					settings_fields( 'no_cart_general_group' );
-					do_settings_sections( 'no_cart_general' );
+					settings_fields( 'sc_catalog_general_group' );
+					do_settings_sections( 'sc_catalog_general' );
 
 				} elseif ( $active_tab == 'labels' ) {
 
@@ -101,14 +101,14 @@ class No_Cart_Settings {
 
 
     /**
-     * Register the general no cart settings
+     * Register the general Showcase Catalog settings
      * @return void
      */
     public function general_settings() {
 
 		register_setting( 
-			'no_cart_general_group',
-			'no_cart_general'
+			'sc_catalog_general_group',
+			'sc_catalog_general'
 		);
 
 		/**
@@ -116,24 +116,24 @@ class No_Cart_Settings {
 		 */
 		add_settings_section(
 			'page_settings',
-			__( 'Page Settings', 'no-cart' ),
+			__( 'Page Settings', 'sc-catalog' ),
 			array( $this, 'page_section' ),
-			'no_cart_general'
+			'sc_catalog_general'
 		);
 		
 		add_settings_field(	
-			'nocart_archive_id',						
-			__( 'Products Page', 'no-cart' ),							
+			'sc_catalog_archive_id',						
+			__( 'Products Page', 'sc-catalog' ),							
 			array( $this, 'select_archive_page' ),	
-			'no_cart_general',	
+			'sc_catalog_general',	
 			'page_settings'			
 		);
 
 		add_settings_field(	
-			'no_cart_archive_title',					
-			__( 'Products Page Title', 'no-cart' ),							
+			'sc_catalog_archive_title',					
+			__( 'Products Page Title', 'sc-catalog' ),							
 			array( $this, 'page_title' ),	
-			'no_cart_general',	
+			'sc_catalog_general',	
 			'page_settings'			
 		);
 
@@ -142,24 +142,24 @@ class No_Cart_Settings {
 		 */
 		add_settings_section(
 			'image_settings',
-			__( 'Image Settings', 'no-cart' ),
+			__( 'Image Settings', 'sc-catalog' ),
 			array( $this, 'image_section' ),
-			'no_cart_general'
+			'sc_catalog_general'
 		);
 
 		add_settings_field(	
-			'nc_item_img',					
-			__( 'Single Product Image', 'no-cart' ),							
+			'sc_catalog_item_img',					
+			__( 'Single Product Image', 'sc-catalog' ),							
 			array( $this, 'single_product_image' ),	
-			'no_cart_general',	
+			'sc_catalog_general',	
 			'image_settings'			
 		);
 
 		add_settings_field(	
-			'nc_item_catalog',					
-			__( 'Product Catalog Images', 'no-cart' ),							
+			'sc_catalog_item_catalog',					
+			__( 'Product Catalog Images', 'sc-catalog' ),							
 			array( $this, 'product_catalog' ),	
-			'no_cart_general',	
+			'sc_catalog_general',	
 			'image_settings'			
 		);
 
@@ -180,17 +180,17 @@ class No_Cart_Settings {
 	 */
 	public function select_archive_page() {
 
-		$options = get_option( 'no_cart_general' );
+		$options = get_option( 'sc_catalog_general' );
 
-		if ( isset( $options['nocart_archive_id'] ) ) {
-			$value = $options['nocart_archive_id'];
+		if ( isset( $options['sc_catalog_archive_id'] ) ) {
+			$value = $options['sc_catalog_archive_id'];
 		} else {
 			$value = null;
 		}
 
 		wp_dropdown_pages(
 		    array(
-		         'name' => 'no_cart_general[nocart_archive_id]',
+		         'name' => 'sc_catalog_general[sc_catalog_archive_id]',
 		         'echo' => 1,
 		         'show_option_none' => __( '&mdash; Select Page &mdash;' ),
 		         'option_none_value' => '0',
@@ -202,19 +202,19 @@ class No_Cart_Settings {
 
 
 	/**
-	 * The No Cart Archive Page Title
+	 * The Showcase Catalog Archive Page Title
 	 * @return string html input
 	 */
 	public function page_title() {
-		$options = get_option( 'no_cart_general' );
+		$options = get_option( 'sc_catalog_general' );
 
 		$value = '';
 
-		if ( isset( $options['nocart_archive_title'] ) )
-			$value = $options['nocart_archive_title'];
+		if ( isset( $options['sc_catalog_archive_title'] ) )
+			$value = $options['sc_catalog_archive_title'];
 
 		// output the input :)
-		printf( '<input type="text" name="no_cart_general[nocart_archive_title]" value="%s" />', $value );
+		printf( '<input type="text" name="sc_catalog_general[sc_catalog_archive_title]" value="%s" />', $value );
 	}
 
 
@@ -223,7 +223,7 @@ class No_Cart_Settings {
 	 * @return string description of this settings section content
 	 */
 	public function image_section() {
-		printf( __( 'The <strong>single product image</strong> is the image that appears on a page that displays only that product. The <strong>product catalog image</strong> is the size of each image in the catalog or products page display. After updating the image settings below you may need to <a href="%s" target="_blank">regenerate your thumbnails</a>.', 'no-cart' ), 'https://wordpress.org/plugins/regenerate-thumbnails/' );
+		printf( __( 'The <strong>single product image</strong> is the image that appears on a page that displays only that product. The <strong>product catalog image</strong> is the size of each image in the catalog or products page display. After updating the image settings below you may need to <a href="%s" target="_blank">regenerate your thumbnails</a>.', 'sc-catalog' ), 'https://wordpress.org/plugins/regenerate-thumbnails/' );
 	} // end image_section
 
 
@@ -234,7 +234,7 @@ class No_Cart_Settings {
 	public function single_product_image() {
 
 		// get the general options
-		$options = get_option( 'no_cart_general' );
+		$options = get_option( 'sc_catalog_general' );
 
 		if ( isset( $options['single-width'] ) ) {
 			$width = $options['single-width']; 
@@ -255,9 +255,9 @@ class No_Cart_Settings {
 		}
 
 		?>
-			<input name="no_cart_general[single-width]" id="single-width" type="text" size="3" value="<?php echo $width; ?>" /> &times; <input name="no_cart_general[single-height]" id="single-height" type="text" size="3" value="<?php echo $height; ?>" />px
+			<input name="sc_catalog_general[single-width]" id="single-width" type="text" size="3" value="<?php echo $width; ?>" /> &times; <input name="sc_catalog_general[single-height]" id="single-height" type="text" size="3" value="<?php echo $height; ?>" />px
 
-			<label><input name="no_cart_general[single-crop]" id="single-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php _e( 'Hard Crop?', 'no-cart' ); ?></label>
+			<label><input name="sc_catalog_general[single-crop]" id="single-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php _e( 'Hard Crop?', 'sc-catalog' ); ?></label>
 
 		<?php
 	}
@@ -270,7 +270,7 @@ class No_Cart_Settings {
 	public function product_catalog() {
 
 		// get the general options
-		$options = get_option( 'no_cart_general' );
+		$options = get_option( 'sc_catalog_general' );
 
 		if ( isset( $options['catalog-width'] ) ) {
 			$width = $options['catalog-width']; 
@@ -291,9 +291,9 @@ class No_Cart_Settings {
 		}
 
 		?>
-			<input name="no_cart_general[catalog-width]" id="catalog-width" type="text" size="3" value="<?php echo $width; ?>" /> &times; <input name="no_cart_general[catalog-height]" id="catalog-height" type="text" size="3" value="<?php echo $height; ?>" />px
+			<input name="sc_catalog_general[catalog-width]" id="catalog-width" type="text" size="3" value="<?php echo $width; ?>" /> &times; <input name="sc_catalog_general[catalog-height]" id="catalog-height" type="text" size="3" value="<?php echo $height; ?>" />px
 
-			<label><input name="no_cart_general[catalog-crop]" id="catalog-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php _e( 'Hard Crop?', 'no-cart' ); ?></label>
+			<label><input name="sc_catalog_general[catalog-crop]" id="catalog-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php _e( 'Hard Crop?', 'sc-catalog' ); ?></label>
 
 		<?php
 	}

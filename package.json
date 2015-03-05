@@ -1,5 +1,5 @@
 {
-  "name": "no-cart-grunt-package",
+  "name": "sc-catalog-grunt-package",
   "version": "0.1.0",
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -1,11 +1,11 @@
 <?php 
 /**
- * Content for the single item view in No Cart
+ * Content for the single item view in Showcase Catalog
  */
 
 ?>
 
-	<?php do_action( 'no_cart_before_single_item' ); ?>
+	<?php do_action( 'sc_catalog_before_single_item' ); ?>
 
 	<div id="item-<?php the_ID(); ?>" <?php post_class(); ?>>
 
@@ -13,9 +13,9 @@
 			/**
 			 * Output the featured image
 			 * 
-			 * @hooked nc_single_image()
+			 * @hooked sc_catalog_single_image()
 			 */
-			do_action( 'no_cart_single_image' );
+			do_action( 'sc_catalog_single_image' );
 		?>
 
 		<div class="item-details">
@@ -24,10 +24,10 @@
 				/**
 				 * Output for the item details
 				 * 
-				 * @hooked nc_item_single_title()
-				 * @hooked nc_item_get_price()
+				 * @hooked sc_catalog_item_single_title()
+				 * @hooked sc_catalog_item_get_price()
 				 */
-				do_action( 'no_cart_item_details' );
+				do_action( 'sc_catalog_item_details' );
 			?>
 
 		</div><!-- /.item-details -->
@@ -35,13 +35,13 @@
 		
 		<?php
 			/**
-			 * No Cart Item Content
+			 * Showcase Catalog Item Content
 			 * 
-			 * @hooked nc_item_content()
+			 * @hooked sc_catalog_item_content()
 			 */
-			do_action( 'no_cart_item_content' );
+			do_action( 'sc_catalog_item_content' );
 		?>
 
 	</div><!-- .entry-content -->
 
-	<?php do_action( 'no_cart_after_single_item' ); ?>
+	<?php do_action( 'sc_catalog_after_single_item' ); ?>

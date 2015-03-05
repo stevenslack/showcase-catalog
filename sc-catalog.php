@@ -1,21 +1,21 @@
 <?php
 /**
- * No Cart
+ * Showcase Catalog
  *
- * @package   No_Cart
+ * @package   SC_Catalog
  * @author    Steven Slack <steven@s2webpress.com>
  * @license   GPL-2.0+
- * @link      http://s2webpress.com/plugins/no-cart
+ * @link      http://s2webpress.com/plugins/sc-catalog
  * @copyright 2014 S2 Web LLC
  *
  * @wordpress-plugin
- * Plugin Name:       No Cart - Featured Products
- * Plugin URI:        s2webpress.com/plugins/no-cart
+ * Plugin Name:       Showcase Catalog - Featured Products
+ * Plugin URI:        s2webpress.com/plugins/sc-catalog
  * Description:       Add products to your site without having a shopping cart. That's right, this plugin has no shopping cart. This may be useful if you want to showcase products in your brick and morter location but not have to support an online store. Many of the same features as a regular shopping cart such as displaying the price, SKU, sale price, product categories and tags. 
  * Version:           1.0.0
  * Author:            S2 Web
  * Author URI:        http://s2webpress.com
- * Text Domain:       no-cart
+ * Text Domain:       sc-catalog
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 
-class No_Cart {
+class SC_Catalog {
 
 
 	/**
@@ -93,18 +93,18 @@ class No_Cart {
 		$this->load_dependencies();
 
 		// registers the Custom Post Type
-		$this->cpt = new No_Cart_CPT();
-		$this->meta = new No_Cart_Meta();
+		$this->cpt = new SC_Catalog_CPT();
+		$this->meta = new SC_Catalog_Meta();
 
 		if ( is_admin() ) {
-    		$this->settings = new No_Cart_Settings();
+    		$this->settings = new SC_Catalog_Settings();
     	}
 
     	// front facing functions
-    	new No_Cart_Front();
+    	new SC_Catalog_Front();
 
 		// Load plugin text domain
-		add_action( 'plugins_loaded', array( $this, 'load_nocart_textdomain' ) );
+		add_action( 'plugins_loaded', array( $this, 'load_sc_catalog_textdomain' ) );
 
 		add_action( 'after_setup_theme', array( $this, 'display_image_sizes' ) );
 
@@ -117,9 +117,9 @@ class No_Cart {
 	 * Loads and defines the internationalization files for this plugin
 	 * so that it is ready for translation.
 	 */ 
-	function load_nocart_textdomain() {
+	function load_sc_catalog_textdomain() {
 
-		$domain = 'no-cart';
+		$domain = 'sc-catalog';
 
 		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 
@@ -135,13 +135,13 @@ class No_Cart {
 	 */
 	private function load_dependencies() {
 
-		require_once plugin_dir_path( __FILE__ ) . 'includes/class-nocart-post-type.php';
-		require_once plugin_dir_path( __FILE__ ) . 'admin/class-no-cart-metaboxes.php';
-		require_once plugin_dir_path( __FILE__ ) . 'includes/class-nocart-item.php';
-		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-core.php';
-		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-template-hooks.php';
-		require_once plugin_dir_path( __FILE__ ) . 'includes/nc-template-functions.php';
-		require_once plugin_dir_path( __FILE__ ) . 'admin/class-nocart-settings.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-catalog-post-type.php';
+		require_once plugin_dir_path( __FILE__ ) . 'admin/class-sc-catalog-metaboxes.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-catalog-item.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-core.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-hooks.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-functions.php';
+		require_once plugin_dir_path( __FILE__ ) . 'admin/class-sc-catalog-settings.php';
 		require_once plugin_dir_path( __FILE__ ) . 'public/class-front-end-functionality.php';
 
 	}
@@ -199,8 +199,8 @@ class No_Cart {
 		/** post types are registered on 
 		 *  activation and rewrite rules are flushed.
 		 */ 
-		$nocart_cpt = new No_Cart_CPT();
-		$nocart_cpt->register_cpt();
+		$sc_catalog_cpt = new SC_Catalog_CPT();
+		$sc_catalog_cpt->register_cpt();
 
 		flush_rewrite_rules();
 
@@ -217,32 +217,32 @@ class No_Cart {
 		if ( ! current_theme_supports( 'post-thumbnails' ) ) {
 			add_theme_support( 'post-thumbnails' );
 		}
-		add_post_type_support( 'no-cart', 'thumbnail' );
+		add_post_type_support( 'sc-catalog', 'thumbnail' );
 
 		// Get General Page Options
-		$options = get_option( 'no_cart_general' );
+		$options = get_option( 'sc_catalog_general' );
 
-		add_image_size( 'nc_single', $options['single-width'], $options['single-height'], $options['single-crop'] );
-		add_image_size( 'nc_catalog', $options['catalog-width'], $options['catalog-height'], $options['catalog-crop'] );
+		add_image_size( 'sc_catalog_single', $options['single-width'], $options['single-height'], $options['single-crop'] );
+		add_image_size( 'sc_catalog_catalog', $options['catalog-width'], $options['catalog-height'], $options['catalog-crop'] );
 
 	}
 
 }
 
 
-register_activation_hook( __FILE__, array( 'No_Cart', 'activate' ) );
+register_activation_hook( __FILE__, array( 'SC_Catalog', 'activate' ) );
 register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
 
 
-if ( ! function_exists( 'no_cart' ) ) {
+if ( ! function_exists( 'sc_catalog' ) ) {
 
-	function no_cart() {
+	function sc_catalog() {
 
-		$nocart = No_Cart::get_instance();
+		$nocart = SC_Catalog::get_instance();
 		
 		return $nocart;
 	}
 
 }
 
-no_cart();
+sc_catalog();
