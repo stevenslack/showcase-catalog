@@ -24,6 +24,8 @@ class SC_Catalog_Settings {
         // register the general settings 
         add_action( 'admin_init', array( $this, 'general_settings' ) );
 
+        add_action( 'admin_init', array( $this, 'save_settings_flush' ) );
+
     }
 
 
@@ -123,7 +125,7 @@ class SC_Catalog_Settings {
 		
 		add_settings_field(	
 			'sc_catalog_archive_id',						
-			__( 'Products Page', 'sc-catalog' ),							
+			__( 'Catalog Page', 'sc-catalog' ),							
 			array( $this, 'select_archive_page' ),	
 			'sc_catalog_general',	
 			'page_settings'			
@@ -175,28 +177,60 @@ class SC_Catalog_Settings {
 
 
 	/**
+	 * Default options for settings
+	 */
+	public function sc_settings() {
+		
+		$defaults = array(
+			'sc_catalog_archive_id'		=> null,
+			'sc_catalog_archive_title' 	=> 'catalog',
+			'single-width'				=> '500',
+			'single-height' 			=> '300',
+			'single-crop' 				=> 0,
+			'catalog-width'		 		=> '300',
+			'catalog-height'		 	=> '300',
+			'catalog-crop' 				=> 0
+		);
+		
+		$options = get_option( 'sc_catalog_general', $defaults );
+
+		return $options;
+		
+	} // end sc_settings
+
+
+	/**
 	 * Select the archive page
 	 * @return int the page ID
 	 */
 	public function select_archive_page() {
 
-		$options = get_option( 'sc_catalog_general' );
+		$options = $this->sc_settings();
+
+		// define the variable
+		$value = null;
 
 		if ( isset( $options['sc_catalog_archive_id'] ) ) {
 			$value = $options['sc_catalog_archive_id'];
-		} else {
-			$value = null;
 		}
 
 		wp_dropdown_pages(
 		    array(
-		         'name' => 'sc_catalog_general[sc_catalog_archive_id]',
-		         'echo' => 1,
-		         'show_option_none' => __( '&mdash; Select Page &mdash;' ),
-		         'option_none_value' => '0',
-		         'selected' =>  $value
+		         'name' 				=> 'sc_catalog_general[sc_catalog_archive_id]',
+		         'echo' 				=> 1,
+		         'show_option_none' 	=> __( '&mdash; Select Page &mdash;' ),
+		         'option_none_value' 	=> '0',
+		         'selected' 			=>  $value
 		    )
 		);
+
+		?>
+
+		<p class="description"><?php _e( 'The default catalog page is "catalog" and can be found here:', 'sc-catalog' ); ?>  
+		<a href="<?php echo esc_url( get_post_type_archive_link( 'sc-catalog' ) ); ?>"><?php _e( 'The Catalog Page', 'sc-catalog' ); ?></a>
+		</p>
+
+		<?php
 		
 	}
 
@@ -206,9 +240,10 @@ class SC_Catalog_Settings {
 	 * @return string html input
 	 */
 	public function page_title() {
-		$options = get_option( 'sc_catalog_general' );
 
-		$value = '';
+		$options = $this->sc_settings();
+
+		$value = 'catalog';
 
 		if ( isset( $options['sc_catalog_archive_title'] ) )
 			$value = $options['sc_catalog_archive_title'];
@@ -234,24 +269,23 @@ class SC_Catalog_Settings {
 	public function single_product_image() {
 
 		// get the general options
-		$options = get_option( 'sc_catalog_general' );
+		$options = $this->sc_settings();
+
+		// define variables
+		$width 	= '500';
+		$height = '300';
+		$crop 	= 0;
 
 		if ( isset( $options['single-width'] ) ) {
 			$width = $options['single-width']; 
-		} else {
-			$width = '500'; // default
 		}
 
 		if ( isset( $options['single-height'] ) ) {
 			$height = $options['single-height']; 
-		} else {
-			$height = '300'; // default
 		}
 
 		if ( isset( $options['single-crop'] ) ) {
 			$crop = $options['single-crop']; 
-		} else {
-			$crop = 0; // defaults to false
 		}
 
 		?>
@@ -271,24 +305,23 @@ class SC_Catalog_Settings {
 	public function product_catalog() {
 
 		// get the general options
-		$options = get_option( 'sc_catalog_general' );
+		$options = $this->sc_settings();
+
+		// define variables
+		$width 	= '300';
+		$height = '300';
+		$crop 	= 0;
 
 		if ( isset( $options['catalog-width'] ) ) {
 			$width = $options['catalog-width']; 
-		} else {
-			$width = '300'; // default
 		}
 
 		if ( isset( $options['catalog-height'] ) ) {
 			$height = $options['catalog-height']; 
-		} else {
-			$height = '300'; // default
 		}
 
 		if ( isset( $options['catalog-crop'] ) ) {
 			$crop = $options['catalog-crop']; 
-		} else {
-			$crop = 0;
 		}
 
 		?>
@@ -297,6 +330,18 @@ class SC_Catalog_Settings {
 			<label><input name="sc_catalog_general[catalog-crop]" id="catalog-crop" type="checkbox" value="1" <?php checked( $crop, 1 ); ?> /> <?php _e( 'Hard Crop?', 'sc-catalog' ); ?></label>
 
 		<?php
+	}
+
+	/**
+	 * Flush rewrite rules on page select
+	 */
+	public function save_settings_flush() {
+
+		$options = $this->sc_settings();
+
+		if ( isset( $options['sc_catalog_archive_id'] ) ) {
+			flush_rewrite_rules();
+		}
 	}
 
 }

@@ -22,6 +22,8 @@
 	.sc-catalog-price {
 		font-size:1.2em;
 
+		span { display:inline-block; }
+
 		del {
 			margin-right: 0.5em
 		}
@@ -39,6 +41,7 @@
 		color:#33B26E;
 		&.strike {
 			color:inherit;
+			text-decoration: line-through;
 		}
 	}
 

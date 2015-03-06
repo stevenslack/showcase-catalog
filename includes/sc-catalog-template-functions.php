@@ -23,7 +23,46 @@ function get_sc_catalog_item() {
 
 	return new SC_Catalog_Item( $post->ID );
 
-}	
+}
+
+
+if ( ! function_exists( 'sc_catalog_wrap_open' ) ) {
+
+	/**
+	 * Output the start of the page wrapper.
+	 */
+	function sc_catalog_wrap_open() {
+		?>
+		<div id="main" class="site-main sc-catalog-wrap catalog-items" role="main">
+		<?php
+	}
+}
+
+if ( ! function_exists( 'sc_catalog_pagination' ) ) {
+
+	/**
+	 * Output the start of the page wrapper.
+	 */
+	function sc_catalog_pagination() {
+
+		the_posts_pagination();
+
+	}
+}
+
+
+if ( ! function_exists( 'sc_catalog_wrap_close' ) ) {
+
+	/**
+	 * Output the start of the page wrapper.
+	 */
+	function sc_catalog_wrap_close() {
+
+		?>
+		</div><!-- /.catalog-items -->
+		<?php
+	}
+}
 
 
 if ( ! function_exists( 'sc_catalog_content_wrap_open' ) ) {
@@ -84,13 +123,29 @@ if ( ! function_exists( 'sc_catalog_image' ) ) {
 		if ( has_post_thumbnail() ) {
 		?>
 		<div class="catalog-item-image">
-			<?php the_post_thumbnail( 'sc_catalog' ); ?>
+			<a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_post_thumbnail( 'sc_catalog' ); ?></a>
 		</div>
 		<!-- /.item-image -->
 		<?php
 		}
 
 	}
+}
+
+
+if ( ! function_exists( 'sc_catalog_item_title' ) ) {
+
+	/**
+	 * Output the items title
+	 * 
+	 * @return string
+	 */
+	function sc_catalog_item_title() {
+		
+		the_title( sprintf( '<h1 class="sc-catalog-item-title entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h1>' );
+
+	}
+
 }
 
 

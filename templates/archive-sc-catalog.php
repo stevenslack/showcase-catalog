@@ -8,10 +8,9 @@ get_header( 'sc-catalog' ); ?>
 		/**
 		 * Showcase Catalog Main Content Before
 		 * 
-		 * @hooked sc_catalog_content_wrap_open - 10
+		 * @hooked sc_content_wrap_open - 10
 		 */
-		do_action( 'sc_catalog_before' ); 
-
+		do_action( 'sc_catalog_archive_before' ); 
 	?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
@@ -24,9 +23,10 @@ get_header( 'sc-catalog' ); ?>
 		/**
 		 * Showcase Catalog Main After
 		 * 
-		 * @hooked sc_catalog_content_wrap_close - 10
+		 * @hooked sc_catalog_pagination - 5
+		 * @hooked sc_catalog_wrap_close - 10
 		 */
-		do_action( 'sc_catalog_after' ); 
+		do_action( 'sc_catalog_archive_after' ); 
 	?>
 
 <?php get_footer( 'sc-catalog' ); ?>

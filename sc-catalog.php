@@ -225,43 +225,41 @@ class SC_Catalog {
 		/**
 		 * Single Project Image
 		 */
+		
+		$single_width  = '500'; 
+		$single_height = '300';
+		$single_crop   = 0;
+
 		if ( isset( $options['single-width'] ) ) {
 			$single_width = $options['single-width']; 
-		} else {
-			$single_width = '500'; // default
 		}
 
 		if ( isset( $options['single-height'] ) ) {
 			$single_height = $options['single-height']; 
-		} else {
-			$single_height = '300'; // default
-		}
+		} 
 
 		if ( isset( $options['single-crop'] ) ) {
 			$single_crop = $options['single-crop']; 
-		} else {
-			$single_crop = 0; // defaults to true
-		}
+		} 
 
 		/**
 		 * Product Catalog Image
 		 */
+		
+		$catalog_width  = '300';
+		$catalog_height = '300';
+		$catalog_crop   = 0;
+
 		if ( isset( $options['catalog-width'] ) ) {
 			$catalog_width = $options['catalog-width']; 
-		} else {
-			$catalog_width = '300'; // default
 		}
 
 		if ( isset( $options['catalog-height'] ) ) {
 			$catalog_height = $options['catalog-height']; 
-		} else {
-			$catalog_height = '300'; // default
 		}
 
 		if ( isset( $options['catalog-crop'] ) ) {
 			$catalog_crop = $options['catalog-crop']; 
-		} else {
-			$catalog_crop = 0;
 		}
 
 		add_image_size( 'sc_catalog_single', $single_width, $single_height, $single_crop );

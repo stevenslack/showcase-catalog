@@ -25,7 +25,7 @@
 				 * Output for the item details
 				 * 
 				 * @hooked sc_catalog_item_single_title()
-				 * @hooked sc_catalog_item_get_price()
+				 * @hooked sc_catalog_html_price()
 				 */
 				do_action( 'sc_catalog_item_details' );
 			?>

@@ -40,6 +40,14 @@ class SC_Catalog_CPT {
 	 */
 	public function register_cpt() {
 
+		$options = get_option( 'sc_catalog_general' );
+
+		$archive_slug = 'catalog';
+
+		if ( isset( $options['sc_catalog_archive_id'] ) ) {
+			$archive_slug = get_post( intval( $options['sc_catalog_archive_id'] ) )->post_name;
+		}
+
 		$labels = array(
 			'name' 					=> __( 'Catalog',         		'sc-catalog' ), 
 			'singular_name' 		=> __( 'Item',          		'sc-catalog' ), 
@@ -67,7 +75,7 @@ class SC_Catalog_CPT {
 			'query_var'			 	=> true,
 			'menu_position' 		=> 20,
 			'menu_icon' 			=> 'dashicons-store',	
-			'rewrite'				=> array( 'slug' => 'catalog', 'with_front' => false ), 	
+			'rewrite'				=> array( 'slug' => $archive_slug, 'with_front' => false ), 	
 			'has_archive' 			=> true, 	
 			'capability_type' 		=> 'page',
 			'hierarchical' 			=> false,
