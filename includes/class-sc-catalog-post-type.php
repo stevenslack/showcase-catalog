@@ -44,7 +44,7 @@ class SC_Catalog_CPT {
 			$archive_slug = get_post( intval( $options['sc_catalog_archive_id'] ) )->post_name;
 		}
 
-		$label = array(
+		$labels = array(
 			'name'                => __( 'Catalog', 'sc-catalog' ), 
 			'singular_name'       => __( 'Item', 'sc-catalog' ), 
 			'all_items'           => __( 'All Catalog Items', 'sc-catalog' ), 
@@ -58,7 +58,7 @@ class SC_Catalog_CPT {
 			'not_found'           => __( 'Nothing found. Try creating a new Item.', 'sc-catalog' ), 
 			'not_found_in_trash'  => __( 'Nothing found in Trash', 'sc-catalog' ),
 			'parent_item_colon'   => '',
-			);
+		);
 			
 		$args = array(
 			'labels'              => $labels,
@@ -86,7 +86,7 @@ class SC_Catalog_CPT {
 	 */
 	public function register_tax() {
 
-			// Adds Category taxonomy for the Showcase Catalog Custom Post Type
+		// Adds Category taxonomy for the Showcase Catalog Custom Post Type
 		$labels = array(
 			'name'              => _x( 'Catalog Categories', 'taxonomy general name', 'sc-catalog' ),
 			'singular_name'     => _x( 'Catalog Category', 'taxonomy singular name', 'sc-catalog' ),
@@ -99,7 +99,7 @@ class SC_Catalog_CPT {
 			'add_new_item'      => __( 'Add New Catalog Category', 'sc-catalog' ),
 			'new_item_name'     => __( 'New Catalog Category Name', 'sc-catalog' ),
 			'menu_name'         => __( 'Catalog Categories', 'sc-catalog' ),
-			);
+		);
 			
 		$args = array(
 			'hierarchical'      => true,
