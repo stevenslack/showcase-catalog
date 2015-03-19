@@ -40,7 +40,7 @@ class SC_Catalog_CPT {
 
 		$archive_slug = 'catalog';
 
-		if ( isset( $options['sc_catalog_archive_id'] ) ) {
+		if ( ! empty( $options['sc_catalog_archive_id'] ) ) {
 			$archive_slug = get_post( intval( $options['sc_catalog_archive_id'] ) )->post_name;
 		}
 
