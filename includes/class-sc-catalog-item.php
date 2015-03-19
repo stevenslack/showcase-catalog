@@ -98,6 +98,7 @@ class SC_Catalog_Item {
 	public function adjusted_price() {
 
 		$price = '';
+		$price_html = '';
 
 		// get the discounted price
 		$sale_price = $this->get_reduced_price() ? '<span class="sc-catalog-sale-price">' . $this->get_reduced_price() . '</span>' : '';
@@ -121,9 +122,11 @@ class SC_Catalog_Item {
 			$price = apply_filters( 'sc_catalog_display_price', $price, $this );
 		}
 
-		if ( $price )
+		if ( $price ) {
 
 			$price_html = sprintf( '<div class="sc-catalog-price">%s</div>', $price );
+
+		}
 
 		return apply_filters( 'sc_catalog_display_html_price', $price_html, $this );
 
