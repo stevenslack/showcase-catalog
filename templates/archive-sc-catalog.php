@@ -4,10 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 get_header( 'sc-catalog' ); ?>
 
-	<?php 
+	<h1 class="page-title"><?php sc_catalog_page_title(); ?></h1>
+
+	<?php
 		/**
 		 * Showcase Catalog Main Content Before
 		 * 
+		 * @hooked sc_catalog_description - 5
 		 * @hooked sc_content_wrap_open - 10
 		 */
 		do_action( 'sc_catalog_archive_before' ); 
