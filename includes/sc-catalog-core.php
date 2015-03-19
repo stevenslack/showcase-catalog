@@ -21,6 +21,14 @@ add_filter( 'template_include', 'sc_catalog_template_loader', 99 );
  */
 function sc_catalog_template_loader( $template ) {
 
+		$options = get_option( 'sc_catalog_general' );
+
+		$shop_id = '';
+
+		if ( ! empty( $options['sc_catalog_archive_id'] ) ) {
+			$shop_id = $options['sc_catalog_archive_id'];
+		} 
+
 		if ( is_single() && get_post_type() == 'sc-catalog' ) {
 
 			// check for the single-sc-catalog.php template in the theme
@@ -32,7 +40,7 @@ function sc_catalog_template_loader( $template ) {
 				return plugin_dir_path( dirname( __FILE__ ) ) . 'templates/single-sc-catalog.php';
 			}
 
-		} elseif ( is_post_type_archive( 'sc-catalog' ) ) {
+		} elseif ( is_post_type_archive( 'sc-catalog' ) || is_page( $shop_id ) ) {
 
 			// check theme for the archive-sc-catalog.php template 
 			$archive_nocart = locate_template( array( 'sc-catalog/archive-sc-catalog.php' ), false );
