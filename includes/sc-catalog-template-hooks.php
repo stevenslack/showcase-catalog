@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'sc_catalog_before', 'sc_catalog_content_wrap_open',  10 );
 add_action( 'sc_catalog_after',  'sc_catalog_content_wrap_close', 10 );
 
+add_action( 'sc_catalog_archive_before', 'sc_catalog_description', 5 );
 add_action( 'sc_catalog_archive_before', 'sc_catalog_wrap_open',  10 );
 add_action( 'sc_catalog_archive_after',  'sc_catalog_pagination', 5  );
 add_action( 'sc_catalog_archive_after',  'sc_catalog_wrap_close', 10 );
