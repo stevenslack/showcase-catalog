@@ -26,6 +26,79 @@ function get_sc_catalog_item() {
 }
 
 
+if ( ! function_exists( 'sc_catalog_page_title' ) ) {
+
+	/**
+	 * sc_catalog_page_title function.
+	 *
+	 * @param  boolean $echo
+	 * @return string
+	 */
+	function sc_catalog_page_title( $echo = true ) {
+
+		if ( is_search() ) {
+			$page_title = sprintf( __( 'Search Results: &ldquo;%s&rdquo;', 'sc-catalog' ), get_search_query() );
+
+		} elseif ( is_tax() ) {
+
+			$page_title = single_term_title( "", false );
+
+		} else {
+
+			$options = get_option( 'sc_catalog_general' );
+
+			if ( ! empty( $options['sc_catalog_archive_id'] ) ) {
+				$page_title = get_the_title( intval( $options['sc_catalog_archive_id'] ) );
+			} else {
+				$page_title = __( 'Catalog', 'sc-catalog' );
+			}
+
+		}
+
+		$page_title = apply_filters( 'sc_catalog_page_title', $page_title );
+
+		if ( $echo )
+			echo $page_title;
+		else
+			return $page_title;
+	}
+}
+
+if ( ! function_exists( 'get_sc_catalog_description' ) ) {
+
+	function get_sc_catalog_description() {
+
+		$options = get_option( 'sc_catalog_general' );
+
+		$catalog_desc = '';
+
+		if ( ! empty( $options['sc_catalog_archive_id'] ) ) {
+			$catalog_page = get_post( intval( $options['sc_catalog_archive_id'] ) );
+
+			$catalog_desc = apply_filters( 'the_content', $catalog_page->post_content );
+
+		}
+
+		return $catalog_desc;
+
+	}
+
+}
+
+if ( ! function_exists( 'sc_catalog_description' ) ) {
+
+	function sc_catalog_description() {
+
+		if ( is_paged() )
+			return;
+		?>
+			<div class="entry-content catalog-desc"><?php echo get_sc_catalog_description(); ?></div>
+		<?php
+	}
+
+}
+
+
 if ( ! function_exists( 'sc_catalog_wrap_open' ) ) {
 
 	/**
@@ -219,3 +292,48 @@ if ( ! function_exists( 'sc_catalog_item_content' ) ) {
 	}
 }
 
+
+
+if ( ! function_exists( 'sc_catalog_content' ) ) {
+
+
+	function sc_catalog_content() {
+
+		$args = array(
+			'post_type' => 'sc-catalog',
+		);
+
+		$catalog = new WP_Query( $args );
+
+		if ( $catalog->have_posts() ) :
+	 
+			/**
+			 * Showcase Catalog Main Content Before
+			 * 
+			 * @hooked sc_content_wrap_open - 10
+			 */
+			do_action( 'sc_catalog_archive_before' ); 
+		?>
+
+			<?php while ( $catalog->have_posts() ) : $catalog->the_post(); ?>
+
+				<?php sc_catalog_get_template_part( 'content', 'item' ); ?>
+
+			<?php endwhile; // end of the loop. ?>
+
+		<?php
+			/**
+			 * Showcase Catalog Main After
+			 * 
+			 * @hooked sc_catalog_pagination - 5
+			 * @hooked sc_catalog_wrap_close - 10
+			 */
+			do_action( 'sc_catalog_archive_after' ); 
+
+		endif;
+
+	// Reset Post Data
+	wp_reset_postdata();
+		
+	}
+}
