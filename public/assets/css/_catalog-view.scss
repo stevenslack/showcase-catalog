@@ -19,6 +19,7 @@
 
 /** catalog display item */
 .catalog-item {
+	border:none;
 
 	.sc-catalog-item-title {
 		font-size:1.1em;
@@ -46,6 +47,29 @@
 		&:hover {
 			opacity:0.8;
 		}
+	}
+}
+
+.sc-category-list {
+	margin-bottom:2em;
+	clear:both;
+	display:block;
+}
+
+.sc-category-title {
+	display:inline-block;
+	margin-bottom:0;
+}
+
+.sc-category-link {
+	padding: 0.3em;
+	display: inline-block;
+	border: 1px solid;
+	border-radius: 3px;
+	margin: 0.3em;
+
+	&:first-of-type {
+		margin-left:0;
 	}
 }
 

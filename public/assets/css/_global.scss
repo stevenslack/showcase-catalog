@@ -1,6 +1,15 @@
 // Global Rules
 
 .sc-catalog-wrap {
+	&:before,
+	&:after {
+	    content: " "; 
+	    display: table; 
+	}
+
+	&:after {
+	    clear: both;
+	}
 
 	.sc-catalog-item-description {
 		display:block;
@@ -47,6 +56,20 @@
 
 	.sc-catalog-sale-price {
 		color:#F46353;
+	}
+
+	.sc-nav-links {
+		clear:both;
+		width:100%;
+		display:block;
+	}
+
+	.sc-previous-item {
+		float:left;
+	}
+
+	.sc-next-item {
+		float:right;
 	}
 
 }

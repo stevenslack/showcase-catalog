@@ -17,11 +17,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'sc_catalog_before', 'sc_catalog_content_wrap_open',  10 );
 add_action( 'sc_catalog_after',  'sc_catalog_content_wrap_close', 10 );
 
+add_action( 'sc_catalog_display_categories', 'sc_categories_list', 5 );
+
 add_action( 'sc_catalog_archive_before', 'sc_catalog_description', 5 );
 add_action( 'sc_catalog_archive_before', 'sc_catalog_wrap_open',  10 );
 add_action( 'sc_catalog_archive_after',  'sc_catalog_pagination', 5  );
 add_action( 'sc_catalog_archive_after',  'sc_catalog_wrap_close', 10 );
 
+/**
+ * Showcase Catalog Taxonomy page
+ */
+add_action( 'sc_catalog_tax_before', 'sc_category_descriptions', 5 );
+add_action( 'sc_catalog_tax_before', 'sc_sub_categories', 10 );
 
 /**
  * Showcase Catalog single content hooks

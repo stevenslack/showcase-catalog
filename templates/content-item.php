@@ -19,7 +19,7 @@
 
 		<div class="item-details">
 
-			<?php 
+			<?php
 				/**
 				 * Output for the item details
 				 * 

@@ -44,11 +44,13 @@ if ( ! function_exists( 'sc_catalog_page_title' ) ) {
 			$page_title = single_term_title( "", false );
 
 		} else {
-
+			// get the options
 			$options = get_option( 'sc_catalog_general' );
 
 			if ( ! empty( $options['sc_catalog_archive_id'] ) ) {
 				$page_title = get_the_title( intval( $options['sc_catalog_archive_id'] ) );
+			} elseif ( ! empty( $options['sc_catalog_archive_title'] ) ) {
+				$page_title = sprintf( __( '%s', 'sc-catalog' ), $options['sc_catalog_archive_title'] );
 			} else {
 				$page_title = __( 'Catalog', 'sc-catalog' );
 			}
@@ -64,17 +66,25 @@ if ( ! function_exists( 'sc_catalog_page_title' ) ) {
 	}
 }
 
-if ( ! function_exists( 'get_sc_catalog_description' ) ) {
 
+if ( ! function_exists( 'get_sc_catalog_description' ) ) {
+	/**
+	 * Get the Catalog Description from the selected catalog page
+	 * or the settings description
+	 * 
+	 * @return html sting
+	 */
 	function get_sc_catalog_description() {
 
 		$options = get_option( 'sc_catalog_general' );
 
 		$catalog_desc = '';
 
+		// if the catalog page is set grab the post content from that page
 		if ( ! empty( $options['sc_catalog_archive_id'] ) ) {
+			// get the post object
 			$catalog_page = get_post( intval( $options['sc_catalog_archive_id'] ) );
-
+			// get the post content
 			$catalog_desc = apply_filters( 'the_content', $catalog_page->post_content );
 
 		}
@@ -86,14 +96,41 @@ if ( ! function_exists( 'get_sc_catalog_description' ) ) {
 }
 
 if ( ! function_exists( 'sc_catalog_description' ) ) {
-
+	/**
+	 * The HTML for the catalog description
+	 * @return string
+	 */
 	function sc_catalog_description() {
 
+		// do not display the description if it is paged
 		if ( is_paged() )
 			return;
 		?>
-			<div class="entry-content catalog-desc"><?php echo get_sc_catalog_description(); ?></div>
+			<div class="entry-content catalog-desc"><?php echo get_sc_catalog_description(); ?></div><!--/.catalog-desc -->
 		<?php
+	}
+
+}
+
+
+if ( ! function_exists( 'sc_category_descriptions' ) ) {
+	/**
+	 * The taxonomy description for catalog categories
+	 */
+	function sc_category_descriptions() {
+
+		// do not display the description if it is paged
+		if ( is_paged() )
+			return;
+
+		$term_desc = term_description();
+
+		if ( $term_desc ) {
+		?>
+			<div class="category-description"><?php echo $term_desc; ?></div><!--/.catalog-desc -->
+		<?php
+
+		}
 	}
 
 }
@@ -293,20 +330,122 @@ if ( ! function_exists( 'sc_catalog_item_content' ) ) {
 }
 
 
+/**
+ * Item Classes
+ * 
+ * @param  int $count the counter 
+ * @return array      the classes for the catalog items to be passed throught the post_class
+ */
+function sc_item_classes( $count ) {
+
+	$classes = array( 'one-third', 'catalog-item' );
+
+	if( 0 == $count || 0 == $count % 3 )
+		$classes[] = 'first';  
+
+	return $classes;
+}
+
+/**
+ * Get the category terms
+ * 
+ * @return array
+ */
+function get_sc_categories() {
+
+	$args = array(
+	    'orderby'           => 'name', 
+	    'order'             => 'ASC',
+	    'hide_empty'        => true,
+	    'parent'			=> 0,
+	); 
+
+	$terms = get_terms( 'sc-catalog-categories', $args );
+
+	return $terms;
+}
+
+
+function sc_categories_list() {
+
+	$terms = get_sc_categories();
+
+	if ( ! $terms )
+		return;
+	?>
+	<div class="sc-category-list">
+		<h4 class="sc-category-title"><?php _e( 'Categories', 'sc-catalog' ); ?>:</h4>
+		<div class="category-nav">
+		<?php
+			foreach ( $terms as $term ) {
+				printf( '<a href="%s" class="sc-category-link">%s</a>', get_term_link( $term ), $term->name );
+			}
+		?>
+		</div>
+		<!-- /.category-nav -->
+	</div>
+	<!-- /.sc-category-list -->
+	<?php
+}
+
+
+/**
+ * Display Sub Categories
+ * @return [type] [description]
+ */
+function sc_sub_categories() {
+
+	// get the queried term
+	// for use on taxonomy pages only
+	$q_term = get_queried_object();
+
+	// get the term children from the queried term
+	$termchildren = get_term_children( $q_term->term_id, 'sc-catalog-categories' );
+
+	if ( $termchildren ) {
+	?>
+	<div class="sc-category-list">
+		<h4 class="sc-category-title"><?php printf( __( '%s categories', 'sc-catalog' ), $q_term->name ); ?>:</h4>
+		<div class="category-nav">
+		<?php
+			foreach ( $termchildren as $child ) {
+				$term = get_term_by( 'id', $child, 'sc-catalog-categories' );
+				printf( '<a href="%s" class="sc-category-link">%s</a>', get_term_link( $child, 'sc-catalog-categories' ), $term->name );
+
+			}
+		?>
+		</div>
+		<!-- /.category-nav -->
+	</div>
+	<!-- /.sc-category-list -->
+	<?php
+	} // end if termchildren
+}
+
 
 if ( ! function_exists( 'sc_catalog_content' ) ) {
 
-
+	/**
+	 * A function which pulls in the catalog
+	 */
 	function sc_catalog_content() {
 
+		// catalog query args
 		$args = array(
 			'post_type' => 'sc-catalog',
+			'paged' => get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1,
 		);
 
 		$catalog = new WP_Query( $args );
 
+
 		if ( $catalog->have_posts() ) :
-	 
+
+		$i = -1; // set the count to -1
+
+		?>
+			<h1 class="page-title"><?php sc_catalog_page_title(); ?></h1>
+		<?php
 			/**
 			 * Showcase Catalog Main Content Before
 			 * 
@@ -317,10 +456,46 @@ if ( ! function_exists( 'sc_catalog_content' ) ) {
 
 			<?php while ( $catalog->have_posts() ) : $catalog->the_post(); ?>
 
-				<?php sc_catalog_get_template_part( 'content', 'item' ); ?>
+			<?php $i++; // increase count by 1 ?>
+
+			<?php do_action( 'sc_catalog_before_item' ); ?>
+
+			<div id="item-<?php the_ID(); ?>" <?php post_class( sc_item_classes( $i ) ); ?>>
+
+				<?php 
+					/**
+					 * Output the featured image
+					 * 
+					 * @hooked sc_catalog_image()
+					 */
+					do_action( 'sc_catalog_item_image' );
+				?>
+
+				<div class="item-details">
+
+					<?php
+						/**
+						 * Output for the item details
+						 * 
+						 * @hooked sc_catalog_item_title()
+						 * @hooked sc_catalog_item_get_price()
+						 */
+						do_action( 'sc_catalog_item_summary' );
+					?>
+
+				</div><!-- /.item-details -->
+
+			</div><!-- /.catalog-item -->
+
+			<?php do_action( 'sc_catalog_after_item' ); ?>
 
 			<?php endwhile; // end of the loop. ?>
 
+			<nav class="sc-nav-links">
+				<span class="sc-previous-item"><?php previous_posts_link( 'Previous Items' ); ?></span>
+				<span class="sc-next-item"><?php next_posts_link( 'Next Items', $catalog->max_num_pages ); ?></span>
+			</nav>
+			<!-- /.catalog-nav-links -->
 		<?php
 			/**
 			 * Showcase Catalog Main After
@@ -334,6 +509,7 @@ if ( ! function_exists( 'sc_catalog_content' ) ) {
 
 	// Reset Post Data
 	wp_reset_postdata();
-		
+
 	}
 }
+

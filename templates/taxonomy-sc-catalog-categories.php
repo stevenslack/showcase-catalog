@@ -7,7 +7,13 @@ get_header( 'sc-catalog' ); ?>
 	<h1 class="page-title"><?php sc_catalog_page_title(); ?></h1>
 
 	<?php 
-		do_action( 'sc_catalog_display_categories' );
+		/**
+		 * Before Taxonomy page
+		 * 
+		 * @hooked sc_category_description - 5
+		 * @hooked sc_sub_categories - 10
+		 */
+		do_action( 'sc_catalog_tax_before' );
 	?>
 
 	<?php
@@ -26,7 +32,12 @@ get_header( 'sc-catalog' ); ?>
 
 		<?php $i++; // increase count by 1 ?>
 	
-		<?php do_action( 'sc_catalog_before_item' ); ?>
+		<?php 
+			/**
+			 * Before Each Item
+			 */
+			do_action( 'sc_catalog_before_item' ); 
+		?>
 
 		<div id="item-<?php the_ID(); ?>" <?php post_class( sc_item_classes( $i ) ); ?>>
 

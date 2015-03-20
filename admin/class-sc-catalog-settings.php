@@ -118,7 +118,7 @@ class SC_Catalog_Settings {
 		 */
 		add_settings_section(
 			'page_settings',
-			__( 'Page Settings', 'sc-catalog' ),
+			__( 'Catalog Display Settings', 'sc-catalog' ),
 			array( $this, 'page_section' ),
 			'sc_catalog_general'
 		);
@@ -133,8 +133,16 @@ class SC_Catalog_Settings {
 
 		add_settings_field(	
 			'sc_catalog_archive_title',					
-			__( 'Products Page Title', 'sc-catalog' ),							
+			__( 'Catalog Page Title', 'sc-catalog' ),							
 			array( $this, 'page_title' ),	
+			'sc_catalog_general',	
+			'page_settings'			
+		);
+
+		add_settings_field(	
+			'sc_catalog_description',					
+			__( 'Catalog Page Description', 'sc-catalog' ),							
+			array( $this, 'catalog_description' ),	
 			'sc_catalog_general',	
 			'page_settings'			
 		);
@@ -151,7 +159,7 @@ class SC_Catalog_Settings {
 
 		add_settings_field(	
 			'sc_catalog_item_img',					
-			__( 'Single Product Image', 'sc-catalog' ),							
+			__( 'Single Catalog Item Image', 'sc-catalog' ),							
 			array( $this, 'single_product_image' ),	
 			'sc_catalog_general',	
 			'image_settings'			
@@ -159,7 +167,7 @@ class SC_Catalog_Settings {
 
 		add_settings_field(	
 			'sc_catalog_item_catalog',					
-			__( 'Product Catalog Images', 'sc-catalog' ),							
+			__( 'Catalog Thumbnail Images', 'sc-catalog' ),							
 			array( $this, 'product_catalog' ),	
 			'sc_catalog_general',	
 			'image_settings'			
@@ -183,7 +191,7 @@ class SC_Catalog_Settings {
 		
 		$defaults = array(
 			'sc_catalog_archive_id'		=> null,
-			'sc_catalog_archive_title' 	=> 'catalog',
+			'sc_catalog_archive_title' 	=> 'Catalog',
 			'single-width'				=> '500',
 			'single-height' 			=> '300',
 			'single-crop' 				=> 0,
@@ -218,7 +226,7 @@ class SC_Catalog_Settings {
 		    array(
 		         'name' 				=> 'sc_catalog_general[sc_catalog_archive_id]',
 		         'echo' 				=> 1,
-		         'show_option_none' 	=> __( '&mdash; Select Page &mdash;' ),
+		         'show_option_none' 	=> __( 'Catalog' ),
 		         'option_none_value' 	=> '0',
 		         'selected' 			=>  $value
 		    )
@@ -243,7 +251,7 @@ class SC_Catalog_Settings {
 
 		$options = $this->sc_settings();
 
-		$value = 'catalog';
+		$value = 'Catalog';
 
 		if ( isset( $options['sc_catalog_archive_title'] ) )
 			$value = $options['sc_catalog_archive_title'];
@@ -253,12 +261,33 @@ class SC_Catalog_Settings {
 	}
 
 
+	/**
+	 * The Desription for the catalog page
+	 */
+	public function catalog_description() {
+	
+		$options = $this->sc_settings();
+
+		$value = '';
+
+		if ( isset( $options['sc_catalog_description'] ) )
+			$value = $options['sc_catalog_description'];
+
+		// Editor Options
+		$settings = array( 'media_buttons' => false, 'textarea_name' => 'sc_catalog_general[sc_catalog_description]', 'teeny' => true );
+
+		// call the WordPress wysiwyg editor
+		echo wp_editor( $value, 'textcatalogdesc', $settings );
+
+	}
+
+
     /**
 	 * Image Settings Description
 	 * @return string description of this settings section content
 	 */
 	public function image_section() {
-		printf( __( 'The <strong>single product image</strong> is the image that appears on a page that displays only that product. The <strong>product catalog image</strong> is the size of each image in the catalog or products page display. After updating the image settings below you may need to <a href="%s" target="_blank">regenerate your thumbnails</a>.', 'sc-catalog' ), 'https://wordpress.org/plugins/regenerate-thumbnails/' );
+		printf( __( 'The <strong>single catalog item image</strong> is the image that appears on a page that displays only that item. The <strong>catalog thumbnail images</strong> are the size of each image in the catalog or items page display. After updating the image settings below you may need to <a href="%s" target="_blank">regenerate your thumbnails</a>.', 'sc-catalog' ), 'https://wordpress.org/plugins/regenerate-thumbnails/' );
 	} // end image_section
 
 
