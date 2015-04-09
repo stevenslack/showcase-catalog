@@ -98,7 +98,7 @@ class SC_Catalog {
 
 		if ( is_admin() ) {
     		$this->settings = new SC_Catalog_Settings();
-    		// new SC_Taxonomy_Fields(); // the taxonomy images
+            new Taxonomy_Term_Image(); // the taxonomy images
     	}
 
     	// front facing functions
@@ -138,7 +138,7 @@ class SC_Catalog {
 
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-catalog-post-type.php';
 		require_once plugin_dir_path( __FILE__ ) . 'admin/class-sc-catalog-metaboxes.php';
-		// require_once plugin_dir_path( __FILE__ ) . 'admin/class-sc-taxonomy-fields.php';
+		require_once plugin_dir_path( __FILE__ ) . 'admin/class-taxonomy-term-image.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-catalog-item.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-core.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-hooks.php';
