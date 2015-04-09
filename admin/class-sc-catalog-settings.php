@@ -147,6 +147,14 @@ class SC_Catalog_Settings {
 			'page_settings'			
 		);
 
+		add_settings_field(	
+			'sc_catalog_display',					
+			__( 'Catalog Page Display', 'sc-catalog' ),							
+			array( $this, 'catalog_item_display' ),	
+			'sc_catalog_general',	
+			'page_settings'			
+		);
+
 		/**
 		 *  The Image Settings
 		 */
@@ -192,6 +200,8 @@ class SC_Catalog_Settings {
 		$defaults = array(
 			'sc_catalog_archive_id'		=> null,
 			'sc_catalog_archive_title' 	=> 'Catalog',
+			'sc_catalog_description'	=> '',
+			'sc_catalog_display'		=> 'both',
 			'single-width'				=> '500',
 			'single-height' 			=> '300',
 			'single-crop' 				=> 0,
@@ -253,8 +263,9 @@ class SC_Catalog_Settings {
 
 		$value = 'Catalog';
 
-		if ( isset( $options['sc_catalog_archive_title'] ) )
+		if ( isset( $options['sc_catalog_archive_title'] ) ) {
 			$value = $options['sc_catalog_archive_title'];
+		}
 
 		// output the input :)
 		printf( '<input type="text" name="sc_catalog_general[sc_catalog_archive_title]" value="%s" />', $value );
@@ -270,8 +281,9 @@ class SC_Catalog_Settings {
 
 		$value = '';
 
-		if ( isset( $options['sc_catalog_description'] ) )
+		if ( isset( $options['sc_catalog_description'] ) ) {
 			$value = $options['sc_catalog_description'];
+		}
 
 		// Editor Options
 		$settings = array( 'media_buttons' => false, 'textarea_name' => 'sc_catalog_general[sc_catalog_description]', 'teeny' => true );
@@ -281,6 +293,31 @@ class SC_Catalog_Settings {
 
 	}
 
+
+	/**
+	 * Select for Displaying Categories
+	 */
+	public function catalog_item_display() {
+	
+		$options = $this->sc_settings();
+
+		$value = 'display';
+
+		if ( isset( $options['sc_catalog_display'] ) ) {
+			$value = $options['sc_catalog_display'];
+		}
+
+		?>
+		<select id="sc-display-options" name="sc_catalog_general[sc_catalog_display]">
+			<option value=""><?php _e( 'Select a display option', 'sc-catalog' ); ?></option>
+			<option value="both"<?php selected( $value, 'both' ) ?>><?php _e( 'Both Categories and Catalog Items', 'sc-catalog' ) ?></option>
+			<option value="categories"<?php selected( $value, 'categories' ); ?>><?php _e( 'Only Display Categories', 'sc-catalog' ); ?></option>
+			<option value="items"<?php selected( $value, 'items' ); ?>><?php _e( 'Only Display Catalog Items', 'sc-catalog' ); ?></option>	
+		</select>
+		<p class="description"><?php _e( 'Select which view you would like your catalog page to show.', 'sc-catalog' ); ?></p>
+		<?php
+
+	}
 
     /**
 	 * Image Settings Description
