@@ -27,7 +27,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-
 class SC_Catalog {
 
 
@@ -39,16 +38,6 @@ class SC_Catalog {
 	 * @var      object
 	 */
 	private static $instance = null;
-
-
-	/**
-	 * The current version of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
-	 */
-	protected $version;
 
 
 	/**
@@ -79,6 +68,8 @@ class SC_Catalog {
 	 */
 	public $settings;
 
+	public $image_sizes;
+
 
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
@@ -88,17 +79,19 @@ class SC_Catalog {
 	 */
 	private function __construct() {
 
-		$this->version = '1.0.0';
-
+		$this->setup_constants();
 		$this->load_dependencies();
 
 		// registers the Custom Post Type
-		$this->cpt = new SC_Catalog_CPT();
-		$this->meta = new SC_Catalog_Meta();
+		new SC_Catalog_CPT();
+		$this->image_sizes = new SC_Images();
 
 		if ( is_admin() ) {
     		$this->settings = new SC_Catalog_Settings();
-            new Taxonomy_Term_Image(); // the taxonomy images
+    		// the taxonomy images
+            new Taxonomy_Term_Image(); 
+    		// meta boxes for admin
+			new SC_Catalog_Meta();
     	}
 
     	// front facing functions
@@ -107,8 +100,22 @@ class SC_Catalog {
 		// Load plugin text domain
 		add_action( 'plugins_loaded', array( $this, 'load_sc_catalog_textdomain' ) );
 
-		add_action( 'after_setup_theme', array( $this, 'display_image_sizes' ) );
+	}
 
+
+	public function setup_constants() {
+
+		if ( ! defined( 'SC_VERSION' ) )
+			define( 'SC_VERSION', '1.0.0' );
+
+		// Plugin Folder Path
+		if ( ! defined( 'SC_DIR' ) )
+			define( 'SC_DIR', dirname(  __FILE__ ) );
+
+		// Plugin Folder URL
+		if ( ! defined( 'SC_URL' ) )
+			define( 'SC_URL', plugins_url( '', __FILE__ ) );
+		
 	}
 
 
@@ -137,14 +144,18 @@ class SC_Catalog {
 	private function load_dependencies() {
 
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-catalog-post-type.php';
+		
 		require_once plugin_dir_path( __FILE__ ) . 'admin/class-sc-catalog-metaboxes.php';
 		require_once plugin_dir_path( __FILE__ ) . 'admin/class-taxonomy-term-image.php';
+		require_once plugin_dir_path( __FILE__ ) . 'admin/class-sc-catalog-settings.php';
+
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-catalog-item.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-core.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-hooks.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-functions.php';
-		require_once plugin_dir_path( __FILE__ ) . 'admin/class-sc-catalog-settings.php';
+		
 		require_once plugin_dir_path( __FILE__ ) . 'public/class-front-end-functionality.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-images.php';
 
 	}
 
@@ -174,7 +185,7 @@ class SC_Catalog {
 	 */
 	public function __clone () {
 
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), $this->version );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), SC_VERSION );
 
 	} // End __clone ()
 
@@ -186,7 +197,7 @@ class SC_Catalog {
 	 */
 	public function __wakeup () {
 
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), $this->version );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), SC_VERSION );
 
 	} // End __wakeup ()
 
@@ -205,67 +216,6 @@ class SC_Catalog {
 		$sc_catalog_cpt->register_cpt();
 
 		flush_rewrite_rules();
-
-	}
-
-
-	/**
-	 * Add the image sizes set in the options page
-	 * 
-	 */
-	public function display_image_sizes() {
-
-		// Post thumbnails
-		if ( ! current_theme_supports( 'post-thumbnails' ) ) {
-			add_theme_support( 'post-thumbnails' );
-		}
-		add_post_type_support( 'sc-catalog', 'thumbnail' );
-
-		// Get General Page Options
-		$options = get_option( 'sc_catalog_general' );
-
-		/**
-		 * Single Project Image
-		 */
-		
-		$single_width  = '500'; 
-		$single_height = '300';
-		$single_crop   = 0;
-
-		if ( isset( $options['single-width'] ) ) {
-			$single_width = $options['single-width']; 
-		}
-
-		if ( isset( $options['single-height'] ) ) {
-			$single_height = $options['single-height']; 
-		} 
-
-		if ( isset( $options['single-crop'] ) ) {
-			$single_crop = $options['single-crop']; 
-		} 
-
-		/**
-		 * Product Catalog Image
-		 */
-		
-		$catalog_width  = '300';
-		$catalog_height = '300';
-		$catalog_crop   = 0;
-
-		if ( isset( $options['catalog-width'] ) ) {
-			$catalog_width = $options['catalog-width']; 
-		}
-
-		if ( isset( $options['catalog-height'] ) ) {
-			$catalog_height = $options['catalog-height']; 
-		}
-
-		if ( isset( $options['catalog-crop'] ) ) {
-			$catalog_crop = $options['catalog-crop']; 
-		}
-
-		add_image_size( 'sc_catalog_single', $single_width, $single_height, $single_crop );
-		add_image_size( 'sc_catalog', $catalog_width, $catalog_height, $catalog_crop );
 
 	}
 

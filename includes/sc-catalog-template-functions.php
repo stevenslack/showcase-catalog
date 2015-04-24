@@ -329,21 +329,73 @@ if ( ! function_exists( 'sc_catalog_item_content' ) ) {
 	}
 }
 
+/**
+ * Get Image Sizes
+ * 
+ * @param  string $image_size the name of the image size
+ * @return array  parameters of the image size
+ */
+function sc_get_image_sizes( $image_size ) {
+
+	if ( ! $image_size ) {
+		return;
+	} elseif ( $image_size === 'sc_catalog' ) {
+		// get the catalog image sizes
+		$image_params = sc_catalog()->image_sizes->get_catalog_image_size();
+
+	} elseif ( $image_size === 'sc_catalog_single' ) {
+		// get the single catalog image size
+		$image_params = sc_catalog()->image_sizes->get_single_image_size();
+	}
+
+	return $image_params;
+
+}
+
+/**
+ * Placeholder Image for Taxonomy Images
+ * 
+ * @param  boolean $echo Echo or Return
+ * @return string img tag with placeholder
+ */
+function sc_placeholder_image( $echo = true ) {
+
+	$image_path = SC_URL . '/public/assets/img/catalog-placeholder.jpg';
+
+	$image_html = sprintf( '<img src="%1$s" class="sc-image-placeholder">', $image_path );
+
+	if ( $echo ) {
+		// echo the image placeholder
+		echo $image_html;
+
+	} else {
+		// return the image placeholder
+		return $image_html;
+	}
+
+}
+
 
 /**
  * Item Classes
  * 
- * @param  int $count the counter 
- * @return array      the classes for the catalog items to be passed throught the post_class
+ * @param  int     $count the counter 
+ * @param  string  $type | default = 'array' | type of return either array or string
+ * @return array   the classes for the catalog items to be passed throught the post_class
  */
-function sc_item_classes( $count ) {
+function sc_item_classes( $count, $type = 'array' ) {
 
 	$classes = array( 'one-third', 'catalog-item' );
 
-	if( 0 == $count || 0 == $count % 3 )
-		$classes[] = 'first';  
-
-	return $classes;
+	if( 0 == $count || 0 == $count % 3 ) {
+		$classes[] = 'first'; 
+	}
+	// return either an array or a string
+	if ( $type === 'string' ) {
+		return implode( ' ', $classes );
+	} elseif ( $type === 'array' ) {
+		return $classes;
+	}
 }
 
 /**
@@ -366,26 +418,73 @@ function get_sc_categories() {
 }
 
 
+function sc_category_term_output( $count, $term ) {
+
+	// Get the term options
+	$term_options = get_option( 'catalog_term_images' );
+
+	?>
+
+		<div class="catalog-item-image catalog-category <?php echo sc_item_classes( $count, 'string' ); ?>">
+			
+			<a href="<?php echo esc_url( get_term_link( $term ) ); ?>">
+
+			<?php 
+				if ( isset( $term_options[ $term->term_id ] ) ) :
+					echo wp_get_attachment_image( $term_options[ $term->term_id ], 'sc_catalog' ); 
+				else : 
+					sc_placeholder_image();
+				endif;
+			?>
+			</a>
+
+			<h3>
+				<a href="<?php echo esc_url( get_term_link( $term ) ); ?>" rel="bookmark">
+					<?php echo esc_attr( $term->name ); ?>
+				</a>
+			</h3><!--/.sc-category-->
+
+		</div><!--/.catalog-item-image -->
+
+	<?php
+	
+}
+
+
 function sc_categories_list() {
+
+	if ( is_paged() ) {
+		return;
+	}
 
 	$terms = get_sc_categories();
 
-	if ( ! $terms )
-		return;
-	?>
-	<div class="sc-category-list">
-		<h4 class="sc-category-title"><?php _e( 'Categories', 'sc-catalog' ); ?>:</h4>
-		<div class="category-nav">
-		<?php
-			foreach ( $terms as $term ) {
-				printf( '<a href="%s" class="sc-category-link">%s</a>', get_term_link( $term ), $term->name );
-			}
+	// Get General Page Options
+	$img_sizes = get_option( 'sc_catalog_general' );
+
+	if ( $terms ) {
 		?>
+		<div class="sc-category-list">
+			<h4 class="sc-category-title"><?php _e( 'Categories', 'sc-catalog' ); ?>:</h4>
+			<div class="category-nav">
+			<?php
+				$i = -1; // set the count to -1
+
+				foreach ( $terms as $term ) {
+
+					$i++; // increase count by 1
+
+					// display the markup for each term
+					sc_category_term_output( $i, $term );
+
+				}
+			?>
+			</div>
+			<!-- /.category-nav -->
 		</div>
-		<!-- /.category-nav -->
-	</div>
-	<!-- /.sc-category-list -->
-	<?php
+		<!-- /.sc-category-list -->
+		<?php
+	}
 }
 
 
@@ -394,6 +493,10 @@ function sc_categories_list() {
  * @return [type] [description]
  */
 function sc_sub_categories() {
+
+	if ( is_paged() ) {
+		return;
+	}
 
 	// get the queried term
 	// for use on taxonomy pages only
@@ -409,8 +512,12 @@ function sc_sub_categories() {
 		<div class="category-nav">
 		<?php
 			foreach ( $termchildren as $child ) {
+
 				$term = get_term_by( 'id', $child, 'sc-catalog-categories' );
-				printf( '<a href="%s" class="sc-category-link">%s</a>', get_term_link( $child, 'sc-catalog-categories' ), $term->name );
+
+				sc_category_term_output( $i = 0, $term );
+
+				// printf( '<a href="%s" class="sc-category-link">%s</a>', get_term_link( $child, 'sc-catalog-categories' ), $term->name );
 
 			}
 		?>

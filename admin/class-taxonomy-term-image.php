@@ -41,8 +41,11 @@ class Taxonomy_Term_Image {
             add_action( $this->taxonomy . '_add_form_fields', array( $this, 'taxonomy_add_form' ) );
             add_action( $this->taxonomy . '_edit_form_fields', array( $this, 'taxonomy_edit_form' ) );
 
-            add_action( 'created_term', array( $this, 'taxonomy_term_form_save' ) );
-            add_action( 'edited_term', array( $this, 'taxonomy_term_form_save' ) );
+            if ( isset( $_POST['taxonomy_term_image'] ) ) {
+                add_action( 'created_term', array( $this, 'taxonomy_term_form_save' ) );
+                add_action( 'edited_term', array( $this, 'taxonomy_term_form_save' ) );
+            }
+
         }
     }
 
@@ -123,7 +126,7 @@ class Taxonomy_Term_Image {
         // look for existing data for this term
         if ( isset( $this->term_images[ $tag->term_id ] ) ) {
             $image_ID  = $this->term_images[ $tag->term_id ];
-            $image_src =  wp_get_attachment_image_src( $image_ID, 'thumbnail' );
+            $image_src = wp_get_attachment_image_src( $image_ID, 'thumbnail' );
         } 
 
         ?>
@@ -158,4 +161,6 @@ class Taxonomy_Term_Image {
             update_option( $this->option_name, $this->term_images );
         }
     }
+
 }
+
