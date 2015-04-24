@@ -107,7 +107,7 @@ class SC_Catalog_Meta {
 
 		if ( $post_type == 'sc-catalog' ) {
 			// enqueue styles which 
-			wp_enqueue_style( 'sc-catalog-styles', plugin_dir_url( __FILE__ ) . 'css/sc-catalog-admin.css' );
+			wp_enqueue_style( 'sc-catalog-styles', SC_URL . 'assets/css/sc-admin.css' );
 		}
 
 

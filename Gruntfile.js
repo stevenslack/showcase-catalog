@@ -12,7 +12,7 @@ module.exports = function(grunt) {
                     style: 'compressed',
                 },
                 files: {
-                    'public/assets/css/sc-catalog.css': 'public/assets/css/sc-catalog.scss',
+                    'assets/css/sc-catalog.css': 'assets/css/sc-catalog.scss',
                 }
             },
         },
@@ -25,8 +25,8 @@ module.exports = function(grunt) {
                 browsers: ['last 2 versions', 'ie 8', 'ie 9', 'ios 6', 'android 4'],
                 map: false
               },
-              src: 'public/assets/css/sc-catalog.css',
-              dest: 'public/assets/css/sc-catalog.css'
+              src: 'assets/css/sc-catalog.css',
+              dest: 'assets/css/sc-catalog.css'
             },
         },
 

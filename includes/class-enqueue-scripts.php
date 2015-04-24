@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
-class SC_Catalog_Front {
+class SC_Catalog_Enqueue {
 
 	/**
 	 * Showcase Catalog Front End construct
@@ -32,7 +32,7 @@ class SC_Catalog_Front {
 	 */
 	public function sc_catalog_scripts() {
 
-		wp_register_style( 'sc-catalog-style', plugins_url( 'assets/css/sc-catalog.css', __FILE__ ), array(), null );
+		wp_register_style( 'sc-catalog-style', SC_URL . '/assets/css/sc-catalog.css', array(), null );
 		wp_enqueue_style( 'sc-catalog-style' );
 
 	}

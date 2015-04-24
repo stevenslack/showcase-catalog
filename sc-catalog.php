@@ -95,7 +95,7 @@ class SC_Catalog {
     	}
 
     	// front facing functions
-    	new SC_Catalog_Front();
+    	new SC_Catalog_Enqueue();
 
 		// Load plugin text domain
 		add_action( 'plugins_loaded', array( $this, 'load_sc_catalog_textdomain' ) );
@@ -144,17 +144,17 @@ class SC_Catalog {
 	private function load_dependencies() {
 
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-catalog-post-type.php';
-		
-		require_once plugin_dir_path( __FILE__ ) . 'admin/class-sc-catalog-metaboxes.php';
-		require_once plugin_dir_path( __FILE__ ) . 'admin/class-taxonomy-term-image.php';
-		require_once plugin_dir_path( __FILE__ ) . 'admin/class-sc-catalog-settings.php';
+
+		require_once plugin_dir_path( __FILE__ ) . 'includes/admin/class-sc-catalog-metaboxes.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/admin/class-taxonomy-term-image.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/admin/class-sc-catalog-settings.php';
 
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-catalog-item.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-core.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-hooks.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-functions.php';
 		
-		require_once plugin_dir_path( __FILE__ ) . 'public/class-front-end-functionality.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/class-enqueue-scripts.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-images.php';
 
 	}

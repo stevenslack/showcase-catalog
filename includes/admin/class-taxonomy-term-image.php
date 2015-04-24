@@ -13,9 +13,6 @@ class Taxonomy_Term_Image {
     // the taxonomy we are targeting
     private $taxonomy = 'sc-catalog-categories';
 
-    // location of our plugin as a url
-    private $plugin_url;
-
     // where we will store our term_data
     private $option_name = 'catalog_term_images';
 
@@ -26,8 +23,6 @@ class Taxonomy_Term_Image {
      * Init the plugin and hook into WordPress
      */
     function __construct() {
-        // get our plugin location for enqueing scripts and styles
-        $this->plugin_url = plugin_dir_url( __FILE__ );
 
         $this->term_images = get_option( $this->option_name, $this->term_images );
 
@@ -64,7 +59,7 @@ class Taxonomy_Term_Image {
             $dependencies = array( 'jquery', 'thickbox', 'media-upload' );
 
             // our custom script
-            wp_register_script( 'taxonomy-term-image-js', $this->plugin_url . '/js/taxonomy-term-image.js', $dependencies, $this->version, true );
+            wp_register_script( 'taxonomy-term-image-js', SC_URL . 'assets/js/admin/taxonomy-term-image.js', $dependencies, $this->version, true );
 
             // Localize the modal window title
             $translation_array = array(
