@@ -150,7 +150,7 @@ class SC_Catalog {
 		require_once plugin_dir_path( __FILE__ ) . 'includes/admin/class-sc-catalog-settings.php';
 
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-catalog-item.php';
-		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-core.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-loader.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-hooks.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-functions.php';
 		
