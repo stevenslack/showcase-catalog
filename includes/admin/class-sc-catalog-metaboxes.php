@@ -91,7 +91,8 @@ class SC_Catalog_Meta {
 			update_post_meta( $post_id, 'sc-catalog-sku', sanitize_text_field( $_POST[ 'sc-catalog-sku' ] ) );
 		}
 		if( isset( $_POST[ 'sc-catalog-price' ] ) ) {
-			update_post_meta( $post_id, 'sc-catalog-price', sanitize_text_field( $_POST[ 'sc-catalog-price' ] ) );
+			update_post_meta( $post_id, 'sc-catalog-price', sanitize_text_field( filter_var( $_POST[ 'sc-catalog-price' ], FILTER_SANITIZE_NUMBER_FLOAT ) ) );
+
 		}
 		if( isset( $_POST[ 'sc-catalog-sale-price' ] ) ) {
 			update_post_meta( $post_id, 'sc-catalog-sale-price', sanitize_text_field( $_POST[ 'sc-catalog-sale-price' ] ) );

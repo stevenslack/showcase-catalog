@@ -23,7 +23,7 @@ class SC_Catalog_Settings {
         add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
         // register the general settings 
         add_action( 'admin_init', array( $this, 'general_settings' ) );
-
+        // save the settings and flush rewrite rules
         add_action( 'admin_init', array( $this, 'save_settings_flush' ) );
 
     }

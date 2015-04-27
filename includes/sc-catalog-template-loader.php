@@ -1,6 +1,6 @@
 <?php
 /**
- * Showcase Catalog Core Functionality
+ * Showcase Catalog Template Loader
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
