@@ -10,6 +10,7 @@ module.exports = function(grunt) {
             dist: {
                 options: {
                     style: 'compressed',
+                    sourcemap: 'none',
                 },
                 files: {
                     'assets/css/sc-catalog.css': 'assets/css/sc-catalog.scss',
@@ -33,7 +34,7 @@ module.exports = function(grunt) {
         // watch for changes and trigger sass, jshint, uglify and livereload
         watch: {
             sass: {
-                files: ['public/assets/css/*.{scss,sass}'],
+                files: ['assets/css/*.{scss,sass}'],
                 tasks: ['sass', 'autoprefixer']
             },
         },
