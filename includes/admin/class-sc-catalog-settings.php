@@ -140,18 +140,26 @@ class SC_Catalog_Settings {
 		);
 
 		add_settings_field(	
-			'sc_catalog_description',					
-			__( 'Catalog Page Description', 'sc-catalog' ),							
+			'sc_catalog_description',
+			__( 'Catalog Page Description', 'sc-catalog' ),
 			array( $this, 'catalog_description' ),	
 			'sc_catalog_general',	
-			'page_settings'			
+			'page_settings'
 		);
 
 		add_settings_field(	
-			'sc_catalog_display',					
-			__( 'Catalog Page Display', 'sc-catalog' ),							
-			array( $this, 'catalog_item_display' ),	
-			'sc_catalog_general',	
+			'sc_catalog_display',
+			__( 'Catalog Page Display', 'sc-catalog' ),
+			array( $this, 'catalog_archive_display' ),
+			'sc_catalog_general',
+			'page_settings'
+		);
+
+		add_settings_field(	
+			'sc_catalog_image_display',					
+			__( 'Category Display', 'sc-catalog' ),
+			array( $this, 'category_image_display' ),	
+			'sc_catalog_general',
 			'page_settings'			
 		);
 
@@ -167,7 +175,7 @@ class SC_Catalog_Settings {
 
 		add_settings_field(	
 			'sc_catalog_item_img',					
-			__( 'Single Catalog Item Image', 'sc-catalog' ),							
+			__( 'Single Catalog Item Image', 'sc-catalog' ),
 			array( $this, 'single_product_image' ),	
 			'sc_catalog_general',	
 			'image_settings'			
@@ -175,7 +183,7 @@ class SC_Catalog_Settings {
 
 		add_settings_field(	
 			'sc_catalog_item_catalog',					
-			__( 'Catalog Thumbnail Images', 'sc-catalog' ),							
+			__( 'Catalog Thumbnail Images', 'sc-catalog' ),
 			array( $this, 'product_catalog' ),	
 			'sc_catalog_general',	
 			'image_settings'			
@@ -202,6 +210,7 @@ class SC_Catalog_Settings {
 			'sc_catalog_archive_title' 	=> 'Catalog',
 			'sc_catalog_description'	=> '',
 			'sc_catalog_display'		=> 'both',
+			'sc_category_images'		=> 'show',
 			'single-width'				=> '500',
 			'single-height' 			=> '300',
 			'single-crop' 				=> 0,
@@ -297,11 +306,11 @@ class SC_Catalog_Settings {
 	/**
 	 * Select for Displaying Categories
 	 */
-	public function catalog_item_display() {
+	public function catalog_archive_display() {
 	
 		$options = $this->sc_settings();
 
-		$value = 'display';
+		$value = 'both';
 
 		if ( isset( $options['sc_catalog_display'] ) ) {
 			$value = $options['sc_catalog_display'];
@@ -315,6 +324,29 @@ class SC_Catalog_Settings {
 			<option value="items"<?php selected( $value, 'items' ); ?>><?php _e( 'Only Display Catalog Items', 'sc-catalog' ); ?></option>	
 		</select>
 		<p class="description"><?php _e( 'Select which view you would like your catalog page to show.', 'sc-catalog' ); ?></p>
+		<?php
+
+	}
+
+	public function category_image_display() {
+
+		$options = $this->sc_settings();
+
+		$value = 'show';
+
+		if ( isset( $options['sc_category_images'] ) ) {
+			$value = $options['sc_category_images'];
+		}
+
+		?>
+		<p>
+			<input type="radio" id="sc-category-images-1" name="sc_catalog_general[sc_category_images]" value="show" <?php checked( $value, 'show', true ); ?>/>
+			<label for="sc-category-images-1"><?php _e( 'Show Category Images', 'sc-catalog' ); ?></label>
+		</p>
+		<p>
+			<input type="radio" id="sc-category-images-2" name="sc_catalog_general[sc_category_images]" value="hide" <?php checked( $value, 'hide', true ); ?>/>
+			<label for="sc-category-images-2"><?php _e( 'Hide Category Images', 'sc-catalog' ); ?></label></br>
+		</p>
 		<?php
 
 	}

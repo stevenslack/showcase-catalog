@@ -65,7 +65,7 @@ class SC_Catalog_Item {
 		if ( $price ) {
 
 			// curently only show US price symbol
-			return money_format( '%+#10n', $price );
+			return money_format( '%+#10n', floatval( $price ) );
 		}
 
 	}
