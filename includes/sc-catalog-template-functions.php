@@ -360,7 +360,7 @@ function sc_get_image_sizes( $image_size ) {
  */
 function sc_placeholder_image( $echo = true ) {
 
-	$image_path = SC_URL . '/public/assets/img/catalog-placeholder.jpg';
+	$image_path = SC_URL . '/assets/img/catalog-placeholder.jpg';
 
 	$image_html = sprintf( '<img src="%1$s" class="sc-image-placeholder">', $image_path );
 
