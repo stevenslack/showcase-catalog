@@ -65,7 +65,7 @@ class SC_Catalog_Item {
 		if ( $price ) {
 
 			// curently only show US price symbol
-			return money_format( '%+#10n', floatval( $price ) );
+			return money_format( '%(#10n', floatval( $price ) );
 		}
 
 	}
@@ -85,7 +85,7 @@ class SC_Catalog_Item {
 		if ( $price ) {
 
 			// curently only show US price symbol
-			return money_format( '%+#10n', $price );
+			return money_format( '%(#10n', $price );
 		}
 	}
 
@@ -142,8 +142,9 @@ class SC_Catalog_Item {
 
 		$sku = esc_html( get_post_meta( $this->id, 'sc-catalog-sku', true ) );
 
-		if ( ! $sku )
+		if ( ! $sku ) {
 			return;
+		}
 
 		return apply_filters( 'sc_catalog_get_the_sku', $sku, $this );
 
@@ -157,8 +158,9 @@ class SC_Catalog_Item {
 
 		$sku = $this->get_sku();
 
-		if ( ! $sku )
+		if ( ! $sku ) {
 			return;
+		}
 
 		return sprintf( '<div class="sc-catalog-sku">%s</div>', $sku );
 

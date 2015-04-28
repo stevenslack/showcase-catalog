@@ -59,10 +59,11 @@ if ( ! function_exists( 'sc_catalog_page_title' ) ) {
 
 		$page_title = apply_filters( 'sc_catalog_page_title', $page_title );
 
-		if ( $echo )
+		if ( $echo ) {
 			echo $page_title;
-		else
+		} else {
 			return $page_title;
+		}
 	}
 }
 
@@ -103,8 +104,9 @@ if ( ! function_exists( 'sc_catalog_description' ) ) {
 	function sc_catalog_description() {
 
 		// do not display the description if it is paged
-		if ( is_paged() )
+		if ( is_paged() ) {
 			return;
+		}
 		?>
 			<div class="entry-content catalog-desc"><?php echo get_sc_catalog_description(); ?></div><!--/.catalog-desc -->
 		<?php
@@ -305,8 +307,9 @@ if ( ! function_exists( 'sc_catalog_the_sku' ) ) {
 		$product = get_sc_catalog_item();
 		$sku = $product->get_sku();
 
-		if ( ! $sku )
+		if ( ! $sku ) {
 			return;
+		}
 
 		printf( '<div class="sc-catalog-sku">%1$s: %2$s</div>', __( 'SKU', 'sc-catalog' ), $sku );
 		
@@ -430,11 +433,11 @@ function sc_category_term_output( $count, $term ) {
 			<a href="<?php echo esc_url( get_term_link( $term ) ); ?>">
 
 			<?php 
-				if ( isset( $term_options[ $term->term_id ] ) ) :
+				if ( isset( $term_options[ $term->term_id ] ) ) {
 					echo wp_get_attachment_image( $term_options[ $term->term_id ], 'sc_catalog' ); 
-				else : 
+				} else {
 					sc_placeholder_image();
-				endif;
+				}
 			?>
 			</a>
 

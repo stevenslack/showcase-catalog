@@ -87,9 +87,11 @@ class SC_Catalog {
 		$this->image_sizes = new SC_Images();
 
 		if ( is_admin() ) {
+			
     		$this->settings = new SC_Catalog_Settings();
     		// the taxonomy images
-            new Taxonomy_Term_Image(); 
+			Taxonomy_Term_Image::instance();
+
     		// meta boxes for admin
 			new SC_Catalog_Meta();
     	}
