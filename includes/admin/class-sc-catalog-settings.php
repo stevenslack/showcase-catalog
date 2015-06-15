@@ -156,7 +156,7 @@ class SC_Catalog_Settings {
 		);
 
 		add_settings_field(	
-			'sc_catalog_image_display',					
+			'sc_category_images',					
 			__( 'Category Display', 'sc-catalog' ),
 			array( $this, 'category_image_display' ),	
 			'sc_catalog_general',

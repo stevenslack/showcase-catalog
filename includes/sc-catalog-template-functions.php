@@ -150,6 +150,7 @@ if ( ! function_exists( 'sc_catalog_wrap_open' ) ) {
 	}
 }
 
+
 if ( ! function_exists( 'sc_catalog_pagination' ) ) {
 
 	/**
@@ -378,7 +379,6 @@ function sc_placeholder_image( $echo = true ) {
 
 }
 
-
 /**
  * Item Classes
  * 
@@ -421,35 +421,47 @@ function get_sc_categories() {
 }
 
 
-function sc_category_term_output( $count, $term ) {
+function sc_category_image( $count, $term ) {
 
 	// Get the term options
 	$term_options = get_option( 'catalog_term_images' );
-
 	?>
+	<div class="catalog-item-image catalog-category <?php echo sc_item_classes( $count, 'string' ); ?>">
+		
+		<a href="<?php echo esc_url( get_term_link( $term ) ); ?>">
+		<?php 
+			if ( isset( $term_options[ $term->term_id ] ) ) {
+				echo wp_get_attachment_image( $term_options[ $term->term_id ], 'sc_catalog' ); 
+			} else {
+				sc_placeholder_image();
+			}
+		?>
+		</a>
 
-		<div class="catalog-item-image catalog-category <?php echo sc_item_classes( $count, 'string' ); ?>">
-			
-			<a href="<?php echo esc_url( get_term_link( $term ) ); ?>">
-
-			<?php 
-				if ( isset( $term_options[ $term->term_id ] ) ) {
-					echo wp_get_attachment_image( $term_options[ $term->term_id ], 'sc_catalog' ); 
-				} else {
-					sc_placeholder_image();
-				}
-			?>
+		<h3>
+			<a href="<?php echo esc_url( get_term_link( $term ) ); ?>" rel="bookmark">
+				<?php echo esc_attr( $term->name ); ?>
 			</a>
+		</h3><!--/.sc-category-->
 
-			<h3>
-				<a href="<?php echo esc_url( get_term_link( $term ) ); ?>" rel="bookmark">
-					<?php echo esc_attr( $term->name ); ?>
-				</a>
-			</h3><!--/.sc-category-->
-
-		</div><!--/.catalog-item-image -->
-
+	</div><!--/.catalog-item-image -->
 	<?php
+}
+
+function sc_category_term_output( $count, $term ) {
+
+	// Get General Page Options
+	$display = get_option( 'sc_catalog_general' );
+
+	if ( $display['sc_category_images'] === 'show' ) :
+
+		sc_category_image( $count, $term );
+
+	elseif ( $display['sc_category_images'] === 'hide' ) : ?>
+
+		<a class="sc-category-link" href="<?php echo esc_url( get_term_link( $term ) ); ?>" rel="bookmark"><?php echo esc_attr( $term->name ); ?></a>
+		
+	<?php endif;
 	
 }
 
@@ -462,15 +474,12 @@ function sc_categories_list() {
 
 	$terms = get_sc_categories();
 
-	// Get General Page Options
-	$img_sizes = get_option( 'sc_catalog_general' );
-
 	if ( $terms ) {
 		?>
 		<div class="sc-category-list">
 			<h4 class="sc-category-title"><?php _e( 'Categories', 'sc-catalog' ); ?>:</h4>
 			<div class="category-nav">
-			<?php
+			<?php 
 				$i = -1; // set the count to -1
 
 				foreach ( $terms as $term ) {
@@ -519,8 +528,6 @@ function sc_sub_categories() {
 				$term = get_term_by( 'id', $child, 'sc-catalog-categories' );
 
 				sc_category_term_output( $i = 0, $term );
-
-				// printf( '<a href="%s" class="sc-category-link">%s</a>', get_term_link( $child, 'sc-catalog-categories' ), $term->name );
 
 			}
 		?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * Showcase Catalogs Custom Metaboxes
- * 
+ *
  * @link       http://s2webpress.com
  * @since      1.0.0
  *
@@ -37,10 +37,10 @@ class SC_Catalog_Meta {
 	 */
 	public function add_sc_catalog_metaboxes() {
 
-		add_meta_box( 
+		add_meta_box(
 			'sc-catalog-meta', // HTML 'id' attribute of the edit screen section
-			__( 'Product Attributes', 'sc-catalog' ), 
-			array( $this, 'sc_catalog_meta_callback' ), 
+			__( 'Product Attributes', 'sc-catalog' ),
+			array( $this, 'sc_catalog_meta_callback' ),
 			'sc-catalog',
 			'normal',
 			'default'
@@ -75,12 +75,12 @@ class SC_Catalog_Meta {
 
 
 	public function save_meta( $post_id ) {
-	 
+
 		// Checks save status
 		$is_autosave = wp_is_post_autosave( $post_id );
 		$is_revision = wp_is_post_revision( $post_id );
 		$is_valid_nonce = ( isset( $_POST[ 'sc_catalog_nonce' ] ) && wp_verify_nonce( $_POST[ 'sc_catalog_nonce' ], basename( __FILE__ ) ) ) ? 'true' : 'false';
-	 
+
 		// Exits script depending on save status
 		if ( $is_autosave || $is_revision || !$is_valid_nonce ) {
 			return;
@@ -91,11 +91,11 @@ class SC_Catalog_Meta {
 			update_post_meta( $post_id, 'sc-catalog-sku', sanitize_text_field( $_POST[ 'sc-catalog-sku' ] ) );
 		}
 		if( isset( $_POST[ 'sc-catalog-price' ] ) ) {
-			update_post_meta( $post_id, 'sc-catalog-price', sanitize_text_field( filter_var( $_POST[ 'sc-catalog-price' ], FILTER_SANITIZE_NUMBER_FLOAT ) ) );
+			update_post_meta( $post_id, 'sc-catalog-price', sanitize_text_field( round( floatval( str_replace( ',', '', $_POST[ 'sc-catalog-price' ] ) ), 2 ) ) );
 
 		}
 		if( isset( $_POST[ 'sc-catalog-sale-price' ] ) ) {
-			update_post_meta( $post_id, 'sc-catalog-sale-price', sanitize_text_field( $_POST[ 'sc-catalog-sale-price' ] ) );
+			update_post_meta( $post_id, 'sc-catalog-sale-price', sanitize_text_field( round( floatval( str_replace( ',', '', $_POST[ 'sc-catalog-sale-price' ] ) ), 2 ) ) );
 		}
 
 	}
@@ -107,7 +107,7 @@ class SC_Catalog_Meta {
 		$post_type = $screen->id;
 
 		if ( $post_type == 'sc-catalog' ) {
-			// enqueue styles which 
+			// enqueue styles which
 			wp_enqueue_style( 'sc-catalog-styles', SC_URL . 'assets/css/sc-admin.css' );
 		}
 

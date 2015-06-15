@@ -52,6 +52,12 @@ class SC_Catalog_Item {
 		return self::$instance;
 	}
 
+	private function set_monetary_locale() {
+		setlocale( LC_MONETARY, get_locale() );
+		$local = localeconv();
+		if ( $local['int_curr_symbol'] === '') setlocale( LC_MONETARY, 'en_US' );
+	}
+
 	/**
 	 * Get the item price
 	 * @return string the price of the product
@@ -59,13 +65,16 @@ class SC_Catalog_Item {
 	public function get_price() {
 
 		// set the currency to US standards
-		setlocale( LC_MONETARY, 'en_US' );
+		$this->set_monetary_locale();
 
 		$price = get_post_meta( $this->id, 'sc-catalog-price', true );
 		if ( $price ) {
 
+			return '$ ' . number_format( $price, 2 );
+
 			// curently only show US price symbol
-			return money_format( '%(#10n', floatval( $price ) );
+		    // return money_format( '%(#6n', $price );
+
 		}
 
 	}
@@ -73,26 +82,26 @@ class SC_Catalog_Item {
 
 	/**
 	 * Get the item reduced price
-	 * 
+	 *
 	 * @return string the reduced price of the item
 	 */
 	public function get_reduced_price() {
 
 		// set the currency to US standards
-		setlocale( LC_MONETARY, 'en_US' );
+		$this->set_monetary_locale();
 
 		$price = get_post_meta( $this->id, 'sc-catalog-sale-price', true );
 		if ( $price ) {
 
 			// curently only show US price symbol
-			return money_format( '%(#10n', $price );
+			return '$ ' . number_format( $price, 2 );
 		}
 	}
 
 	/**
 	 * The Adusted Price
 	 * displays the sale price and the regular price
-	 * 
+	 *
 	 * @return string html span tags with price
 	 */
 	public function adjusted_price() {
@@ -135,7 +144,7 @@ class SC_Catalog_Item {
 
 	/**
 	 * Get the SKU
-	 * 
+	 *
 	 * @return string the SKU
 	 */
 	public function get_sku() {
