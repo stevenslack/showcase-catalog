@@ -11,8 +11,8 @@
  * @wordpress-plugin
  * Plugin Name:       Showcase Catalog - Featured Products
  * Plugin URI:        s2webpress.com/plugins/sc-catalog
- * Description:       Add products to your site without having a shopping cart. That's right, this plugin has no shopping cart. This may be useful if you want to showcase products in your brick and morter location but not have to support an online store. Many of the same features as a regular shopping cart such as displaying the price, SKU, sale price, product categories and tags. 
- * Version:           1.0.0
+ * Description:       Add products to your site without having a shopping cart. That's right, this plugin has no shopping cart. This may be useful if you want to showcase products in your brick and morter location but not have to support an online store. Many of the same features as a regular shopping cart such as displaying the price, SKU, sale price, product categories and tags.
+ * Version:           1.1
  * Author:            S2 Web
  * Author URI:        http://s2webpress.com
  * Text Domain:       sc-catalog
@@ -42,7 +42,7 @@ class SC_Catalog {
 
 	/**
 	 * The custom post type.
-	 * 
+	 *
 	 * @access  public
 	 * @since   1.0.0
 	 * @var     string
@@ -51,7 +51,7 @@ class SC_Catalog {
 
 	/**
 	 * The custom meta.
-	 * 
+	 *
 	 * @access  public
 	 * @since   1.0.0
 	 * @var     string
@@ -61,7 +61,7 @@ class SC_Catalog {
 
 	/**
 	 * The settings page
-	 * 
+	 *
 	 * @access  public
 	 * @since   1.0.0
 	 * @var     string
@@ -87,7 +87,7 @@ class SC_Catalog {
 		$this->image_sizes = new SC_Images();
 
 		if ( is_admin() ) {
-			
+
     		$this->settings = new SC_Catalog_Settings();
     		// the taxonomy images
 			Taxonomy_Term_Image::instance();
@@ -108,7 +108,7 @@ class SC_Catalog {
 	public function setup_constants() {
 
 		if ( ! defined( 'SC_VERSION' ) )
-			define( 'SC_VERSION', '1.0.0' );
+			define( 'SC_VERSION', '1.1' );
 
 		// Plugin Folder Path
 		if ( ! defined( 'SC_DIR' ) )
@@ -117,7 +117,7 @@ class SC_Catalog {
 		// Plugin Folder URL
 		if ( ! defined( 'SC_URL' ) )
 			define( 'SC_URL', plugins_url( '', __FILE__ ) );
-		
+
 	}
 
 
@@ -126,7 +126,7 @@ class SC_Catalog {
 	 *
 	 * Loads and defines the internationalization files for this plugin
 	 * so that it is ready for translation.
-	 */ 
+	 */
 	function load_sc_catalog_textdomain() {
 
 		$domain = 'sc-catalog';
@@ -155,7 +155,7 @@ class SC_Catalog {
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-loader.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-hooks.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/sc-catalog-template-functions.php';
-		
+
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-enqueue-scripts.php';
 		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-images.php';
 
@@ -206,14 +206,14 @@ class SC_Catalog {
 
 	/**
 	 * The Activation function. Runs when the plugin is activated
-	 * 
+	 *
 	 * @since      1.0.0
 	 */
 	public static function activate() {
 
-		/** post types are registered on 
+		/** post types are registered on
 		 *  activation and rewrite rules are flushed.
-		 */ 
+		 */
 		$sc_catalog_cpt = new SC_Catalog_CPT();
 		$sc_catalog_cpt->register_cpt();
 
@@ -233,7 +233,7 @@ if ( ! function_exists( 'sc_catalog' ) ) {
 	function sc_catalog() {
 
 		$nocart = SC_Catalog::get_instance();
-		
+
 		return $nocart;
 	}
 
