@@ -560,7 +560,11 @@ function sc_row_output( $count, $total, $position ) {
 
 function sc_categories_list() {
 
-	if ( is_paged() ) {
+	// get the display options
+	$options = get_option( 'sc_catalog_general' );
+	$display = $options['sc_catalog_display'];
+
+	if ( is_paged() || $display === 'items' ) {
 		return;
 	}
 
