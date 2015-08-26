@@ -1,7 +1,7 @@
 <?php
 /**
  * Showcase Catalog Settings Page
- * 
+ *
  * @link       http://s2webpress.com
  * @since      1.0.0
  *
@@ -14,14 +14,14 @@ class SC_Catalog_Settings {
 
     /**
      * Showcase Catalog Settings Construct
-     * 
+     *
      * @since    1.0.0
      */
     public function __construct() {
 
         // add a submenu page
         add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
-        // register the general settings 
+        // register the general settings
         add_action( 'admin_init', array( $this, 'general_settings' ) );
         // save the settings and flush rewrite rules
         add_action( 'admin_init', array( $this, 'save_settings_flush' ) );
@@ -36,11 +36,11 @@ class SC_Catalog_Settings {
 
     	// adds a submenu page under Showcase Catalog's Custom Post Type
         add_submenu_page(
-            'edit.php?post_type=sc-catalog', 
+            'edit.php?post_type=sc-catalog',
 			__( 'Showcase Catalog Settings', 'sc-catalog' ),
 			__( 'Settings', 'sc-catalog' ),
             'administrator',
-            'sc-catalog-settings', 
+            'sc-catalog-settings',
             array( $this, 'display_admin_page' )
         );
 
@@ -49,7 +49,7 @@ class SC_Catalog_Settings {
 
     /**
      * Display for the Settings page with Tabs
-     * 
+     *
      * @return sting html
      */
     public function display_admin_page() {
@@ -61,7 +61,7 @@ class SC_Catalog_Settings {
 
         ?>
         <div class="wrap">
-            <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>   
+            <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
             <?php settings_errors(); ?>
 
 			<?php if( isset( $_GET[ 'tab' ] ) ) {
@@ -91,7 +91,7 @@ class SC_Catalog_Settings {
 					// settings_fields( 'pr-nocontent-settings' );
 					// do_settings_sections( 'pr-nocontent-settings' );
 				}
-						
+
 				submit_button();
 
             ?>
@@ -108,7 +108,7 @@ class SC_Catalog_Settings {
      */
     public function general_settings() {
 
-		register_setting( 
+		register_setting(
 			'sc_catalog_general_group',
 			'sc_catalog_general'
 		);
@@ -122,32 +122,40 @@ class SC_Catalog_Settings {
 			array( $this, 'page_section' ),
 			'sc_catalog_general'
 		);
-		
-		add_settings_field(	
-			'sc_catalog_archive_id',						
-			__( 'Catalog Page', 'sc-catalog' ),							
-			array( $this, 'select_archive_page' ),	
-			'sc_catalog_general',	
-			'page_settings'			
-		);
 
-		add_settings_field(	
-			'sc_catalog_archive_title',					
-			__( 'Catalog Page Title', 'sc-catalog' ),							
-			array( $this, 'page_title' ),	
-			'sc_catalog_general',	
-			'page_settings'			
-		);
-
-		add_settings_field(	
-			'sc_catalog_description',
-			__( 'Catalog Page Description', 'sc-catalog' ),
-			array( $this, 'catalog_description' ),	
-			'sc_catalog_general',	
+		add_settings_field(
+			'sc_catalog_archive_id',
+			__( 'Catalog Page', 'sc-catalog' ),
+			array( $this, 'select_archive_page' ),
+			'sc_catalog_general',
 			'page_settings'
 		);
 
-		add_settings_field(	
+		add_settings_field(
+			'sc_catalog_archive_title',
+			__( 'Catalog Page Title', 'sc-catalog' ),
+			array( $this, 'page_title' ),
+			'sc_catalog_general',
+			'page_settings'
+		);
+
+		add_settings_field(
+			'sc_catalog_description',
+			__( 'Catalog Page Description', 'sc-catalog' ),
+			array( $this, 'catalog_description' ),
+			'sc_catalog_general',
+			'page_settings'
+		);
+
+		add_settings_field(
+			'sc_catalog_columns',
+			__( 'Number of columns for item display', 'sc-catalog' ),
+			array( $this, 'catalog_row_item_number' ),
+			'sc_catalog_general',
+			'page_settings'
+		);
+
+		add_settings_field(
 			'sc_catalog_display',
 			__( 'Catalog Page Display', 'sc-catalog' ),
 			array( $this, 'catalog_archive_display' ),
@@ -155,12 +163,12 @@ class SC_Catalog_Settings {
 			'page_settings'
 		);
 
-		add_settings_field(	
-			'sc_category_images',					
+		add_settings_field(
+			'sc_category_images',
 			__( 'Category Display', 'sc-catalog' ),
-			array( $this, 'category_image_display' ),	
+			array( $this, 'category_image_display' ),
 			'sc_catalog_general',
-			'page_settings'			
+			'page_settings'
 		);
 
 		/**
@@ -173,20 +181,20 @@ class SC_Catalog_Settings {
 			'sc_catalog_general'
 		);
 
-		add_settings_field(	
-			'sc_catalog_item_img',					
+		add_settings_field(
+			'sc_catalog_item_img',
 			__( 'Single Catalog Item Image', 'sc-catalog' ),
-			array( $this, 'single_product_image' ),	
-			'sc_catalog_general',	
-			'image_settings'			
+			array( $this, 'single_product_image' ),
+			'sc_catalog_general',
+			'image_settings'
 		);
 
-		add_settings_field(	
-			'sc_catalog_item_catalog',					
+		add_settings_field(
+			'sc_catalog_item_catalog',
 			__( 'Catalog Thumbnail Images', 'sc-catalog' ),
-			array( $this, 'product_catalog' ),	
-			'sc_catalog_general',	
-			'image_settings'			
+			array( $this, 'product_catalog' ),
+			'sc_catalog_general',
+			'image_settings'
 		);
 
     }
@@ -204,25 +212,26 @@ class SC_Catalog_Settings {
 	 * Default options for settings
 	 */
 	public function sc_settings() {
-		
+
 		$defaults = array(
-			'sc_catalog_archive_id'		=> null,
-			'sc_catalog_archive_title' 	=> 'Catalog',
-			'sc_catalog_description'	=> '',
-			'sc_catalog_display'		=> 'both',
-			'sc_category_images'		=> 'show',
-			'single-width'				=> '500',
-			'single-height' 			=> '300',
-			'single-crop' 				=> 0,
-			'catalog-width'		 		=> '300',
-			'catalog-height'		 	=> '300',
-			'catalog-crop' 				=> 0
+			'sc_catalog_archive_id'    => null,
+			'sc_catalog_archive_title' => 'Catalog',
+			'sc_catalog_description'   => '',
+			'sc_catalog_columns'       => 3,
+			'sc_catalog_display'       => 'both',
+			'sc_category_images'       => 'show',
+			'single-width'             => '500',
+			'single-height'            => '300',
+			'single-crop'              => 0,
+			'catalog-width'            => '300',
+			'catalog-height'           => '300',
+			'catalog-crop'             => 0
 		);
-		
+
 		$options = get_option( 'sc_catalog_general', $defaults );
 
 		return $options;
-		
+
 	} // end sc_settings
 
 
@@ -253,12 +262,12 @@ class SC_Catalog_Settings {
 
 		?>
 
-		<p class="description"><?php _e( 'The default catalog page is "catalog" and can be found here:', 'sc-catalog' ); ?>  
+		<p class="description"><?php _e( 'The default catalog page is "catalog" and can be found here:', 'sc-catalog' ); ?>
 		<a href="<?php echo esc_url( get_post_type_archive_link( 'sc-catalog' ) ); ?>"><?php _e( 'The Catalog Page', 'sc-catalog' ); ?></a>
 		</p>
 
 		<?php
-		
+
 	}
 
 
@@ -285,7 +294,7 @@ class SC_Catalog_Settings {
 	 * The Desription for the catalog page
 	 */
 	public function catalog_description() {
-	
+
 		$options = $this->sc_settings();
 
 		$value = '';
@@ -302,12 +311,30 @@ class SC_Catalog_Settings {
 
 	}
 
+	/**
+	 * Set the number of items per row. Columns
+	 */
+	public function catalog_row_item_number() {
+
+		$options = $this->sc_settings();
+
+		$value = 3;
+
+		if ( isset( $options['sc_catalog_columns'] ) ) {
+			$value = $options['sc_catalog_columns'];
+		}
+
+		printf( '<input name="sc_catalog_general[sc_catalog_columns]" type="number" min="0" max="6" step="1" size="3" value="%s" />', $value );
+		printf( '<p class="description">%s</p>', __( 'Enter a number which will determine the amount of columns your product display will have. The default is 3. The max is 6', 'sc-catalog' ) );
+
+	}
+
 
 	/**
 	 * Select for Displaying Categories
 	 */
 	public function catalog_archive_display() {
-	
+
 		$options = $this->sc_settings();
 
 		$value = 'both';
@@ -321,7 +348,7 @@ class SC_Catalog_Settings {
 			<option value=""><?php _e( 'Select a display option', 'sc-catalog' ); ?></option>
 			<option value="both"<?php selected( $value, 'both' ) ?>><?php _e( 'Both Categories and Catalog Items', 'sc-catalog' ) ?></option>
 			<option value="categories"<?php selected( $value, 'categories' ); ?>><?php _e( 'Only Display Categories', 'sc-catalog' ); ?></option>
-			<option value="items"<?php selected( $value, 'items' ); ?>><?php _e( 'Only Display Catalog Items', 'sc-catalog' ); ?></option>	
+			<option value="items"<?php selected( $value, 'items' ); ?>><?php _e( 'Only Display Catalog Items', 'sc-catalog' ); ?></option>
 		</select>
 		<p class="description"><?php _e( 'Select which view you would like your catalog page to show.', 'sc-catalog' ); ?></p>
 		<?php
@@ -362,7 +389,7 @@ class SC_Catalog_Settings {
 
 	/**
 	 * Single Product Image Settings
-	 * 
+	 *
 	 */
 	public function single_product_image() {
 
@@ -375,15 +402,15 @@ class SC_Catalog_Settings {
 		$crop 	= 0;
 
 		if ( isset( $options['single-width'] ) ) {
-			$width = $options['single-width']; 
+			$width = $options['single-width'];
 		}
 
 		if ( isset( $options['single-height'] ) ) {
-			$height = $options['single-height']; 
+			$height = $options['single-height'];
 		}
 
 		if ( isset( $options['single-crop'] ) ) {
-			$crop = $options['single-crop']; 
+			$crop = $options['single-crop'];
 		}
 
 		?>
@@ -398,7 +425,7 @@ class SC_Catalog_Settings {
 
 	/**
 	 * Catalog Product Image Settings
-	 * 
+	 *
 	 */
 	public function product_catalog() {
 
@@ -411,15 +438,15 @@ class SC_Catalog_Settings {
 		$crop 	= 0;
 
 		if ( isset( $options['catalog-width'] ) ) {
-			$width = $options['catalog-width']; 
+			$width = $options['catalog-width'];
 		}
 
 		if ( isset( $options['catalog-height'] ) ) {
-			$height = $options['catalog-height']; 
+			$height = $options['catalog-height'];
 		}
 
 		if ( isset( $options['catalog-crop'] ) ) {
-			$crop = $options['catalog-crop']; 
+			$crop = $options['catalog-crop'];
 		}
 
 		?>

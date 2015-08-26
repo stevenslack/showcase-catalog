@@ -21,6 +21,7 @@ add_action( 'sc_catalog_display_categories', 'sc_categories_list', 5 );
 
 add_action( 'sc_catalog_archive_before', 'sc_catalog_description', 5 );
 add_action( 'sc_catalog_archive_before', 'sc_catalog_wrap_open',  10 );
+add_action( 'sc_catalog_archive_before', 'sc_catalog_products_header', 15 );
 add_action( 'sc_catalog_archive_after',  'sc_catalog_pagination', 5  );
 add_action( 'sc_catalog_archive_after',  'sc_catalog_wrap_close', 10 );
 

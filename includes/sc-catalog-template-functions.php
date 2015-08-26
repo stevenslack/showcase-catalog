@@ -1,7 +1,7 @@
 <?php
 /**
  * Showcase Catalog Template Functions
- * 
+ *
  * These functions can be overritten with actions / filters
  *
  * @version     1.0.0
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Get Showcase Catalog Item
- * 
+ *
  * @return object the Showcase Catalog Item
  */
 function get_sc_catalog_item() {
@@ -72,7 +72,7 @@ if ( ! function_exists( 'get_sc_catalog_description' ) ) {
 	/**
 	 * Get the Catalog Description from the selected catalog page
 	 * or the settings description
-	 * 
+	 *
 	 * @return html sting
 	 */
 	function get_sc_catalog_description() {
@@ -147,6 +147,23 @@ if ( ! function_exists( 'sc_catalog_wrap_open' ) ) {
 		?>
 		<div id="main" class="site-main sc-catalog-wrap catalog-items" role="main">
 		<?php
+	}
+}
+
+if ( ! function_exists( 'sc_catalog_products_header' ) ) {
+	/**
+	 * Output the Products page title
+	 * @return string header tag
+	 */
+	function sc_catalog_products_header() {
+		$options = get_option( 'sc_catalog_general' );
+		$show = $options['sc_catalog_display'];
+
+		if ( $show === 'both' && ! is_paged() ) :
+		?>
+		<h4 class="sc-catalog-all-products-title"><?php echo apply_filters( 'sc_products_header_text', __( 'All Catalog Items', 'sc-catalog' ) ); ?></h4>
+		<?php
+		endif;
 	}
 }
 
@@ -250,11 +267,11 @@ if ( ! function_exists( 'sc_catalog_item_title' ) ) {
 
 	/**
 	 * Output the items title
-	 * 
+	 *
 	 * @return string
 	 */
 	function sc_catalog_item_title() {
-		
+
 		the_title( sprintf( '<h1 class="sc-catalog-item-title entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h1>' );
 
 	}
@@ -266,11 +283,11 @@ if ( ! function_exists( 'sc_catalog_item_single_title' ) ) {
 
 	/**
 	 * Output the items title
-	 * 
+	 *
 	 * @return string
 	 */
 	function sc_catalog_item_single_title() {
-		
+
 		?>
 		<h1 itemprop="name" class="sc-catalog-item-title entry-title"><?php the_title(); ?></h1>
 		<?php
@@ -284,8 +301,8 @@ if ( ! function_exists( 'sc_catalog_html_price' ) ) {
 
 	/**
 	 * The Showcase Catalog Item HTML Price
-	 * 
-	 * @return string html 
+	 *
+	 * @return string html
 	 */
 	function sc_catalog_html_price() {
 
@@ -313,17 +330,17 @@ if ( ! function_exists( 'sc_catalog_the_sku' ) ) {
 		}
 
 		printf( '<div class="sc-catalog-sku">%1$s: %2$s</div>', __( 'SKU', 'sc-catalog' ), $sku );
-		
+
 	}
 
 }
 
 
 if ( ! function_exists( 'sc_catalog_item_content' ) ) {
-	
+
 	/**
 	 * Showcase Catalog Item Content
-	 * 
+	 *
 	 * @return string the_content
 	 */
 	function sc_catalog_item_content() {
@@ -335,7 +352,7 @@ if ( ! function_exists( 'sc_catalog_item_content' ) ) {
 
 /**
  * Get Image Sizes
- * 
+ *
  * @param  string $image_size the name of the image size
  * @return array  parameters of the image size
  */
@@ -358,7 +375,7 @@ function sc_get_image_sizes( $image_size ) {
 
 /**
  * Placeholder Image for Taxonomy Images
- * 
+ *
  * @param  boolean $echo Echo or Return
  * @return string img tag with placeholder
  */
@@ -379,19 +396,60 @@ function sc_placeholder_image( $echo = true ) {
 
 }
 
+function sc_column_class() {
+	// get the number of rows set on the options page
+	$options = get_option( 'sc_catalog_general' );
+	$rows    = $options['sc_catalog_columns'];
+
+	if ( empty( $rows ) )
+		$class = 'one-third';
+	else {
+		switch ( $rows ) {
+			case 1:
+				$class = 'sc-full';
+				break;
+			case 2:
+				$class = 'sc-half';
+				break;
+			case 3:
+				$class = 'sc-one-third';
+				break;
+			case 4:
+				$class = 'sc-one-quarter';
+				break;
+			case 5:
+				$class = 'sc-one-fifth';
+				break;
+			case 6:
+				$class = 'sc-one-sixth';
+				break;
+			default:
+				$class = 'sc-one-third';
+				break;
+		}
+	}
+
+	return $class;
+}
+
 /**
  * Item Classes
- * 
- * @param  int     $count the counter 
+ *
+ * @param  int     $count the counter
  * @param  string  $type | default = 'array' | type of return either array or string
  * @return array   the classes for the catalog items to be passed throught the post_class
  */
 function sc_item_classes( $count, $type = 'array' ) {
 
-	$classes = array( 'one-third', 'catalog-item' );
+	$options = get_option( 'sc_catalog_general' );
+	$rows    = $options['sc_catalog_columns'];
 
-	if( 0 == $count || 0 == $count % 3 ) {
-		$classes[] = 'first'; 
+	$column_class = sc_column_class();
+
+	$classes = array( $column_class, 'catalog-item' );
+
+	if( 0 == $count || 0 == $count % $rows ) {
+		$classes[] = 'first';
 	}
 	// return either an array or a string
 	if ( $type === 'string' ) {
@@ -403,17 +461,17 @@ function sc_item_classes( $count, $type = 'array' ) {
 
 /**
  * Get the category terms
- * 
+ *
  * @return array
  */
 function get_sc_categories() {
 
 	$args = array(
-	    'orderby'           => 'name', 
+	    'orderby'           => 'name',
 	    'order'             => 'ASC',
 	    'hide_empty'        => true,
 	    'parent'			=> 0,
-	); 
+	);
 
 	$terms = get_terms( 'sc-catalog-categories', $args );
 
@@ -427,11 +485,11 @@ function sc_category_image( $count, $term ) {
 	$term_options = get_option( 'catalog_term_images' );
 	?>
 	<div class="catalog-item-image catalog-category <?php echo sc_item_classes( $count, 'string' ); ?>">
-		
+
 		<a href="<?php echo esc_url( get_term_link( $term ) ); ?>">
-		<?php 
+		<?php
 			if ( isset( $term_options[ $term->term_id ] ) ) {
-				echo wp_get_attachment_image( $term_options[ $term->term_id ], 'sc_catalog' ); 
+				echo wp_get_attachment_image( $term_options[ $term->term_id ], 'sc_catalog' );
 			} else {
 				sc_placeholder_image();
 			}
@@ -460,9 +518,43 @@ function sc_category_term_output( $count, $term ) {
 	elseif ( $display['sc_category_images'] === 'hide' ) : ?>
 
 		<a class="sc-category-link" href="<?php echo esc_url( get_term_link( $term ) ); ?>" rel="bookmark"><?php echo esc_attr( $term->name ); ?></a>
-		
+
 	<?php endif;
-	
+
+}
+
+/**
+ * Out put the rows for the catalog
+ * @param  int $count        the count iterator for each item
+ * @param  int $total        the total number of items per page
+ * @param  string $position  the position | start or end
+ * @return string
+ */
+function sc_row_output( $count, $total, $position ) {
+
+	// get the number of rows set on the options page
+	$options = get_option( 'sc_catalog_general' );
+	$rows    = $options['sc_catalog_columns'];
+
+	if ( $position === 'start' ) {
+
+		if ( $count === 0 ) {
+			// the opening row
+			echo '<div class="sc-product-row">';
+		}
+
+		if( $count % $rows == 0 && $count !== 0 ) {
+			// close the last row and open a new one
+			echo '</div><!-- /.sc-product-row --><div class="sc-product-row">';
+		}
+
+	} elseif ( $position === 'end' ) {
+
+	    // output the closing tag if we are on the last item
+	    if( $count === ( $total - 1 ) ) {
+	        echo '</div><!-- /.sc-product-row -->';
+	    }
+	}
 }
 
 
@@ -474,20 +566,27 @@ function sc_categories_list() {
 
 	$terms = get_sc_categories();
 
+	// count the terms for the total
+	$total = count( $terms );
+
 	if ( $terms ) {
 		?>
 		<div class="sc-category-list">
 			<h4 class="sc-category-title"><?php _e( 'Categories', 'sc-catalog' ); ?>:</h4>
 			<div class="category-nav">
-			<?php 
+			<?php
 				$i = -1; // set the count to -1
 
 				foreach ( $terms as $term ) {
 
 					$i++; // increase count by 1
 
+					sc_row_output( $i, $total, 'start' );
+
 					// display the markup for each term
 					sc_category_term_output( $i, $term );
+
+					sc_row_output( $i, $total, 'end' );
 
 				}
 			?>
@@ -517,17 +616,28 @@ function sc_sub_categories() {
 	// get the term children from the queried term
 	$termchildren = get_term_children( $q_term->term_id, 'sc-catalog-categories' );
 
+	// count the terms for the total
+	$total = count( $termchildren );
+
 	if ( $termchildren ) {
 	?>
 	<div class="sc-category-list">
 		<h4 class="sc-category-title"><?php printf( __( '%s categories', 'sc-catalog' ), $q_term->name ); ?>:</h4>
 		<div class="category-nav">
 		<?php
+			$i = -1; // set the count to -1
+
 			foreach ( $termchildren as $child ) {
+
+				$i++; // increase count by 1
 
 				$term = get_term_by( 'id', $child, 'sc-catalog-categories' );
 
+				sc_row_output( $i, $total, 'start' );
+
 				sc_category_term_output( $i = 0, $term );
+
+				sc_row_output( $i, $total, 'end' );
 
 			}
 		?>
@@ -547,14 +657,20 @@ if ( ! function_exists( 'sc_catalog_content' ) ) {
 	 */
 	function sc_catalog_content() {
 
+		// get the display options
+		$options = get_option( 'sc_catalog_general' );
+		$display = $options['sc_catalog_display'];
+
 		// catalog query args
 		$args = array(
 			'post_type' => 'sc-catalog',
-			'paged' => get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1,
+			'paged'     => get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1,
 		);
 
 		$catalog = new WP_Query( $args );
 
+		// get the total number of posts per each page
+		$total = $catalog->post_count;
 
 		if ( $catalog->have_posts() ) :
 
@@ -565,24 +681,28 @@ if ( ! function_exists( 'sc_catalog_content' ) ) {
 		<?php
 			/**
 			 * Showcase Catalog Main Content Before
-			 * 
+			 *
 			 * @hooked sc_content_wrap_open - 10
 			 */
-			do_action( 'sc_catalog_archive_before' ); 
+			do_action( 'sc_catalog_archive_before' );
 		?>
 
 			<?php while ( $catalog->have_posts() ) : $catalog->the_post(); ?>
 
-			<?php $i++; // increase count by 1 ?>
+			<?php $i++; // increase count by 1
+			// start the row
+	        sc_row_output( $i, $total, 'start' );
+
+			?>
 
 			<?php do_action( 'sc_catalog_before_item' ); ?>
 
 			<div id="item-<?php the_ID(); ?>" <?php post_class( sc_item_classes( $i ) ); ?>>
 
-				<?php 
+				<?php
 					/**
 					 * Output the featured image
-					 * 
+					 *
 					 * @hooked sc_catalog_image()
 					 */
 					do_action( 'sc_catalog_item_image' );
@@ -593,7 +713,7 @@ if ( ! function_exists( 'sc_catalog_content' ) ) {
 					<?php
 						/**
 						 * Output for the item details
-						 * 
+						 *
 						 * @hooked sc_catalog_item_title()
 						 * @hooked sc_catalog_item_get_price()
 						 */
@@ -604,7 +724,11 @@ if ( ! function_exists( 'sc_catalog_content' ) ) {
 
 			</div><!-- /.catalog-item -->
 
-			<?php do_action( 'sc_catalog_after_item' ); ?>
+			<?php do_action( 'sc_catalog_after_item' );
+				// end the row
+	        	sc_row_output( $i, $total, 'end' );
+
+			?>
 
 			<?php endwhile; // end of the loop. ?>
 
@@ -616,11 +740,11 @@ if ( ! function_exists( 'sc_catalog_content' ) ) {
 		<?php
 			/**
 			 * Showcase Catalog Main After
-			 * 
+			 *
 			 * @hooked sc_catalog_pagination - 5
 			 * @hooked sc_catalog_wrap_close - 10
 			 */
-			do_action( 'sc_catalog_archive_after' ); 
+			do_action( 'sc_catalog_archive_after' );
 
 		endif;
 

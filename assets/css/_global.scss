@@ -3,8 +3,8 @@
 .sc-catalog-wrap {
 	&:before,
 	&:after {
-	    content: " "; 
-	    display: table; 
+	    content: " ";
+	    display: table;
 	}
 
 	&:after {
@@ -72,4 +72,16 @@
 		float:right;
 	}
 
+}
+
+.sc-product-row {
+	&:before,
+	&:after {
+	    content: " ";
+	    display: table;
+	}
+
+	&:after {
+	    clear: both;
+	}
 }

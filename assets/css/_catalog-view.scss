@@ -89,7 +89,7 @@
 }
 
 @media screen and ( max-width: 767px ) {
-	
+
 	.catalog-item {
 		width:48%;
 		float:left;
@@ -101,17 +101,42 @@
 
 
 @media screen and ( min-width: 768px ) {
-	
+
 	.catalog-item {
-		&.one-third {
+		&.sc-full {
+			width:100%;
+		}
+		&.sc-half,
+		&.sc-one-third,
+		&.sc-one-quarter,
+		&.sc-one-fifth,
+		&.sc-one-sixth {
+			float:left;
+		}
+  		&.first {
+			margin-left:0 !important;
+  		}
+  		&.sc-half {
+  			width: 47%;
+	  		margin-left: 6%;
+  		}
+		&.sc-one-third {
 		  	width: 30.3333%;
 	  		margin-left: 4.5%;
-	  		float:left;
+	  	}
+		&.sc-one-quarter {
+		  	width: 23.5%;
+	  		margin-left: 2%;
+	  	}
+	  	&.sc-one-fifth {
+		  	width: 19%;
+	  		margin-left: 1%;
+	  	}
+	  	&.sc-one-sixth {
+		  	width: 15.777777%;
+	  		margin-left: 1%;
 	  	}
 
-  		&.first {
-			margin-left:0;
-  		}
 	}
 
 }
