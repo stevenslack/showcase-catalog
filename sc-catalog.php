@@ -66,7 +66,7 @@ class SC_Catalog {
 	 * @since   1.0.0
 	 * @var     string
 	 */
-	public $settings;
+	public $settings = false;
 
 	public $image_sizes;
 
@@ -216,6 +216,14 @@ class SC_Catalog {
 		 */
 		$sc_catalog_cpt = new SC_Catalog_CPT();
 		$sc_catalog_cpt->register_cpt();
+
+		$settings = new SC_Catalog_Settings();
+		$options  = get_option( 'sc_catalog_general' );
+
+		if ( false === $options ) {
+			$defaults = $settings->sc_settings();
+			update_option( 'sc_catalog_general', $defaults );
+		}
 
 		flush_rewrite_rules();
 

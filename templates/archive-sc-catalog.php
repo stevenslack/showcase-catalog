@@ -15,9 +15,9 @@ get_header( 'sc-catalog' ); ?>
 
 		if ( $display !== 'categories' ) :
 
-		global $wp_query;
-		// get the total number of posts per each page
-		$total = $wp_query->post_count;
+			global $wp_query;
+			// get the total number of posts per each page
+			$total = $wp_query->post_count;
 	?>
 
 	<?php
