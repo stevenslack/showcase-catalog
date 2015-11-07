@@ -435,9 +435,9 @@ function sc_column_class() {
 /**
  * Item Classes
  *
- * @param  int     $count the counter
- * @param  string  $type | default = 'array' | type of return either array or string
- * @return array   the classes for the catalog items to be passed throught the post_class
+ * @param  int                  $count the counter
+ * @param  string               $type | default = 'array' | type of return either array or string
+ * @return mixed[array/sting]   the classes for the catalog items
  */
 function sc_item_classes( $count, $type = 'array' ) {
 
@@ -701,7 +701,7 @@ if ( ! function_exists( 'sc_catalog_content' ) ) {
 
 			<?php do_action( 'sc_catalog_before_item' ); ?>
 
-			<div id="item-<?php the_ID(); ?>" <?php post_class( sc_item_classes( $i ) ); ?>>
+			<div id="item-<?php the_ID(); ?>" class="<?php echo sc_item_classes( $i, 'string' ); ?>">
 
 				<?php
 					/**

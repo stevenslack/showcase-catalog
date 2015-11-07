@@ -46,7 +46,7 @@ get_header( 'sc-catalog' ); ?>
 			do_action( 'sc_catalog_before_item' );
 		?>
 
-		<div id="item-<?php the_ID(); ?>" <?php post_class( sc_item_classes( $i ) ); ?>>
+		<div id="item-<?php the_ID(); ?>" class="<?php echo sc_item_classes( $i, 'string' ); ?>">
 
 			<?php
 				/**
